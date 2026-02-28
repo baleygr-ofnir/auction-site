@@ -1,4 +1,5 @@
 using System.Linq.Expressions;
+using auction_site_api.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace auction_site_api.Data.Repositories;
@@ -42,7 +43,6 @@ public abstract class GenericRepository<T> : IRepository<T> where T : class
 
     public virtual T Update(T entity)
     {
-        
         DbSet.Update(entity);
         return entity;
     }

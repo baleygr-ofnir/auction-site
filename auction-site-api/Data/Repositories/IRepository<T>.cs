@@ -1,4 +1,5 @@
 using System.Linq.Expressions;
+using auction_site_api.Data.Entities;
 
 namespace auction_site_api.Data.Repositories;
 

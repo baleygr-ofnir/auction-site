@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using auction_site_api.Data;
@@ -11,9 +12,11 @@ using auction_site_api.Data;
 namespace auction_site_api.Data.Migrations
 {
     [DbContext(typeof(AuctionContext))]
-    partial class AuctionContextModelSnapshot : ModelSnapshot
+    [Migration("20260228011203_SeedData")]
+    partial class SeedData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -72,37 +75,37 @@ namespace auction_site_api.Data.Migrations
                         new
                         {
                             Id = new Guid("11111111-1111-1111-1111-111111111111"),
-                            CreatedAt = new DateTime(2025, 1, 1, 12, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedAt = new DateTime(2026, 2, 28, 1, 12, 2, 775, DateTimeKind.Utc).AddTicks(2399),
                             CreatorId = new Guid("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"),
                             Description = "15\" gaming laptop with RTX GPU",
-                            EndTime = new DateTime(2030, 1, 1, 10, 0, 0, 0, DateTimeKind.Utc),
+                            EndTime = new DateTime(2026, 2, 28, 6, 12, 2, 775, DateTimeKind.Utc).AddTicks(2399),
                             IsActive = true,
                             StartPrice = 800m,
-                            StartTime = new DateTime(2025, 1, 1, 11, 0, 0, 0, DateTimeKind.Utc),
+                            StartTime = new DateTime(2026, 2, 28, 0, 12, 2, 775, DateTimeKind.Utc).AddTicks(2399),
                             Title = "Gaming Laptop"
                         },
                         new
                         {
                             Id = new Guid("22222222-2222-2222-2222-222222222222"),
-                            CreatedAt = new DateTime(2025, 1, 1, 12, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedAt = new DateTime(2026, 2, 28, 1, 12, 2, 775, DateTimeKind.Utc).AddTicks(2399),
                             CreatorId = new Guid("cccccccc-cccc-cccc-cccc-cccccccccccc"),
                             Description = "Custom mechanical keyboard",
-                            EndTime = new DateTime(2030, 1, 1, 10, 0, 0, 0, DateTimeKind.Utc),
+                            EndTime = new DateTime(2026, 2, 28, 3, 12, 2, 775, DateTimeKind.Utc).AddTicks(2399),
                             IsActive = true,
                             StartPrice = 100m,
-                            StartTime = new DateTime(2025, 1, 1, 10, 0, 0, 0, DateTimeKind.Utc),
+                            StartTime = new DateTime(2026, 2, 27, 23, 12, 2, 775, DateTimeKind.Utc).AddTicks(2399),
                             Title = "Mechanical Keyboard"
                         },
                         new
                         {
                             Id = new Guid("33333333-3333-3333-3333-333333333333"),
-                            CreatedAt = new DateTime(2024, 12, 29, 12, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedAt = new DateTime(2026, 2, 25, 1, 12, 2, 775, DateTimeKind.Utc).AddTicks(2399),
                             CreatorId = new Guid("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"),
                             Description = "Box of LPs",
-                            EndTime = new DateTime(2030, 1, 1, 10, 0, 0, 0, DateTimeKind.Utc),
+                            EndTime = new DateTime(2026, 2, 27, 1, 12, 2, 775, DateTimeKind.Utc).AddTicks(2399),
                             IsActive = true,
                             StartPrice = 50m,
-                            StartTime = new DateTime(2024, 12, 29, 12, 0, 0, 0, DateTimeKind.Utc),
+                            StartTime = new DateTime(2026, 2, 25, 1, 12, 2, 775, DateTimeKind.Utc).AddTicks(2399),
                             Title = "Vintage Vinyl Collection"
                         });
                 });
@@ -141,7 +144,7 @@ namespace auction_site_api.Data.Migrations
                             Id = new Guid("44444444-4444-4444-4444-444444444444"),
                             Amount = 820m,
                             AuctionId = new Guid("11111111-1111-1111-1111-111111111111"),
-                            CreatedAt = new DateTime(2025, 1, 1, 11, 30, 0, 0, DateTimeKind.Utc),
+                            CreatedAt = new DateTime(2026, 2, 28, 0, 42, 2, 775, DateTimeKind.Utc).AddTicks(2399),
                             UserId = new Guid("cccccccc-cccc-cccc-cccc-cccccccccccc")
                         },
                         new
@@ -149,7 +152,7 @@ namespace auction_site_api.Data.Migrations
                             Id = new Guid("55555555-5555-5555-5555-555555555555"),
                             Amount = 850m,
                             AuctionId = new Guid("11111111-1111-1111-1111-111111111111"),
-                            CreatedAt = new DateTime(2025, 1, 1, 11, 50, 0, 0, DateTimeKind.Utc),
+                            CreatedAt = new DateTime(2026, 2, 28, 1, 2, 2, 775, DateTimeKind.Utc).AddTicks(2399),
                             UserId = new Guid("cccccccc-cccc-cccc-cccc-cccccccccccc")
                         },
                         new
@@ -157,7 +160,7 @@ namespace auction_site_api.Data.Migrations
                             Id = new Guid("66666666-6666-6666-6666-666666666666"),
                             Amount = 90m,
                             AuctionId = new Guid("33333333-3333-3333-3333-333333333333"),
-                            CreatedAt = new DateTime(2024, 12, 31, 11, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedAt = new DateTime(2026, 2, 27, 0, 12, 2, 775, DateTimeKind.Utc).AddTicks(2399),
                             UserId = new Guid("cccccccc-cccc-cccc-cccc-cccccccccccc")
                         });
                 });
@@ -210,7 +213,7 @@ namespace auction_site_api.Data.Migrations
                         new
                         {
                             Id = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
-                            CreatedAt = new DateTime(2025, 1, 1, 12, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedAt = new DateTime(2026, 2, 28, 1, 12, 2, 774, DateTimeKind.Utc).AddTicks(8095),
                             Email = "admin@example.com",
                             IsActive = true,
                             IsAdmin = true,
@@ -220,7 +223,7 @@ namespace auction_site_api.Data.Migrations
                         new
                         {
                             Id = new Guid("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"),
-                            CreatedAt = new DateTime(2025, 1, 1, 12, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedAt = new DateTime(2026, 2, 28, 1, 12, 2, 774, DateTimeKind.Utc).AddTicks(8275),
                             Email = "alice@example.com",
                             IsActive = true,
                             IsAdmin = false,
@@ -230,7 +233,7 @@ namespace auction_site_api.Data.Migrations
                         new
                         {
                             Id = new Guid("cccccccc-cccc-cccc-cccc-cccccccccccc"),
-                            CreatedAt = new DateTime(2025, 1, 1, 12, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedAt = new DateTime(2026, 2, 28, 1, 12, 2, 774, DateTimeKind.Utc).AddTicks(8277),
                             Email = "bob@example.com",
                             IsActive = true,
                             IsAdmin = false,

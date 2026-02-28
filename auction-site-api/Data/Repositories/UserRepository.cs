@@ -37,7 +37,34 @@ public class UserRepository : GenericRepository<User>
 
         user.UpdatedAt = DateTime.UtcNow;
         
-        DbSet.Update(user);
-        return user;
+        base.Update(user);
+        return updated;
+    }
+
+    public async Task<User?> GetByUsernameAsync(string username)
+    {
+        var user = await FindAsync(user => user.Username.ToLower() == username.ToLower());
+        
+        return user.FirstOrDefault();
+    }
+
+    public async Task<User?> GetByEmailAsync(string email)
+    {
+        //if (string.IsNullOrWhiteSpace(email)) return null;
+        
+        var user = await FindAsync(u => u.Email.ToLower() == email.ToLower());
+        
+        return user.FirstOrDefault();
+    }
+
+    public async Task<User?> GetByUsernameOrEmailAsync(string usernameOrEmail)
+    {
+        var user = await FindAsync
+            (
+                user => user.Username.ToLower() == usernameOrEmail.ToLower()
+                || user.Email.ToLower() == usernameOrEmail.ToLower()
+            );
+
+        return user.FirstOrDefault();
     }
 }

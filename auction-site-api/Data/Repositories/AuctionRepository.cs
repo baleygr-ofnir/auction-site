@@ -9,14 +9,46 @@ public class AuctionRepository : GenericRepository<Auction>
     {
     }
 
+    public override async Task<Auction?> GetAsync(Guid id)
+    {
+        return await DbSet
+            .Include(auction => auction.Bids)
+            .FirstOrDefaultAsync(auction => auction.Id == id);
+    }
+
+    public override async Task<IEnumerable<Auction>> AllAsync()
+    {
+        return await DbSet
+            .Include(auction => auction.Bids)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    public async Task<IEnumerable<Auction>> SearchActiveAsync(string? query)
+    {
+        var now = DateTime.UtcNow;
+
+        var auctions = DbSet
+            .Include(auction => auction.Bids)
+            .Where(auction => auction.IsActive && auction.EndTime > now);
+
+        if (!string.IsNullOrWhiteSpace(query)) auctions = auctions.Where(auction => auction.Title.Contains(query));
+
+        return await auctions
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
     public override Auction Update(Auction updated)
     {
-        var auction = DbSet.FirstOrDefault(a => a.Id == updated.Id);
+        var auction = DbSet
+            .Include(auction => auction.Bids)
+            .FirstOrDefault(a => a.Id == updated.Id);
         if (auction is null) return null;
         
         if
         (
-            !string.IsNullOrEmpty(updated.Title)
+            !string.IsNullOrWhiteSpace(updated.Title)
             && !string.Equals(auction.Title, updated.Title, StringComparison.Ordinal)
         )
         {
@@ -25,14 +57,14 @@ public class AuctionRepository : GenericRepository<Auction>
 
         if
         (
-            !string.IsNullOrEmpty(updated.Description)
+            !string.IsNullOrWhiteSpace(updated.Description)
             && !string.Equals(auction.Description, updated.Description, StringComparison.Ordinal)
         )
         {
             auction.Description = updated.Description;
         }
 
-        if (auction.EndTime != updated.EndTime)
+        if (updated.EndTime != default && auction.EndTime != updated.EndTime)
         {
             auction.EndTime = updated.EndTime;
         }

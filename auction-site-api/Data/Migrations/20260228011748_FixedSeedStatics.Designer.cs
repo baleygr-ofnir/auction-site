@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using auction_site_api.Data;
@@ -11,9 +12,11 @@ using auction_site_api.Data;
 namespace auction_site_api.Data.Migrations
 {
     [DbContext(typeof(AuctionContext))]
-    partial class AuctionContextModelSnapshot : ModelSnapshot
+    [Migration("20260228011748_FixedSeedStatics")]
+    partial class FixedSeedStatics
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -75,7 +78,7 @@ namespace auction_site_api.Data.Migrations
                             CreatedAt = new DateTime(2025, 1, 1, 12, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = new Guid("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"),
                             Description = "15\" gaming laptop with RTX GPU",
-                            EndTime = new DateTime(2030, 1, 1, 10, 0, 0, 0, DateTimeKind.Utc),
+                            EndTime = new DateTime(2025, 1, 1, 17, 0, 0, 0, DateTimeKind.Utc),
                             IsActive = true,
                             StartPrice = 800m,
                             StartTime = new DateTime(2025, 1, 1, 11, 0, 0, 0, DateTimeKind.Utc),
@@ -87,7 +90,7 @@ namespace auction_site_api.Data.Migrations
                             CreatedAt = new DateTime(2025, 1, 1, 12, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = new Guid("cccccccc-cccc-cccc-cccc-cccccccccccc"),
                             Description = "Custom mechanical keyboard",
-                            EndTime = new DateTime(2030, 1, 1, 10, 0, 0, 0, DateTimeKind.Utc),
+                            EndTime = new DateTime(2025, 1, 1, 14, 0, 0, 0, DateTimeKind.Utc),
                             IsActive = true,
                             StartPrice = 100m,
                             StartTime = new DateTime(2025, 1, 1, 10, 0, 0, 0, DateTimeKind.Utc),
@@ -99,7 +102,7 @@ namespace auction_site_api.Data.Migrations
                             CreatedAt = new DateTime(2024, 12, 29, 12, 0, 0, 0, DateTimeKind.Utc),
                             CreatorId = new Guid("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"),
                             Description = "Box of LPs",
-                            EndTime = new DateTime(2030, 1, 1, 10, 0, 0, 0, DateTimeKind.Utc),
+                            EndTime = new DateTime(2024, 12, 31, 12, 0, 0, 0, DateTimeKind.Utc),
                             IsActive = true,
                             StartPrice = 50m,
                             StartTime = new DateTime(2024, 12, 29, 12, 0, 0, 0, DateTimeKind.Utc),

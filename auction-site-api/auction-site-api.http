@@ -1,6 +1,76 @@
-@auction_site_api_HostAddress = http://localhost:5220
+@auction_site_api_HostAddress = http://localhost:5220/api
 
-GET {{auction_site_api_HostAddress}}/weatherforecast/
-Accept: application/json
+### testuser1
+POST {{auction_site_api_HostAddress}}/users/register
+Content-Type: application/json
 
-###
+{
+    "username": "testuser1",
+    "email": "testuser1@example.com",
+    "password": "P@ssword!"
+}
+
+### testuser2 vars
+@userId2 = 019ca10c-acbe-72cb-93cb-067a325797d9
+
+### testuser2
+POST {{auction_site_api_HostAddress}}/users/register
+Content-Type: application/json
+
+{
+    "username": "testuser2",
+    "email": "testuser2@example.com",
+    "password": "P@ssword!"
+}
+
+### Disable testuser2
+PUT {{auction_site_api_HostAddress}}/users/{{userId2}}
+Content-Type: application/json
+
+{
+  "isActive": true,
+  "isAdmin": false
+}
+
+
+### baleygr
+POST {{auction_site_api_HostAddress}}/users/register
+Content-Type: application/json
+
+{
+  "username": "baleygr",
+  "email": "baleygr.jarngrimr@proton.me",
+  "password": "h4nd0fgr1mn1r"
+}
+
+### baleygr vars
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwMTljYTEwZC1hYjc4LTdkOGItOWNiNC1iY2Q0NWEzNTEyZjMiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjAxOWNhMTBkLWFiNzgtN2Q4Yi05Y2I0LWJjZDQ1YTM1MTJmMyIsImp0aSI6ImUxOThjNWVhLTkyZDUtNDNhOS04YzVlLWMxZjE5OTllZWRmMSIsImlzcyI6ImF1Y3Rpb24tc2l0ZS1hcGkiLCJhdWQiOlsiYXVjdGlvbi1zaXRlLWFwcCIsImF1Y3Rpb24tc2l0ZS1hcHAiXSwibmJmIjoxNzcyMjMyMDE4LCJleHAiOjE3NzIyMzU2MTh9.32TpObsSAeJ7h77hQ1Ns_6YiizMBgQSJ2zwxLYpsT-0
+@userId = 019ca10d-ab78-7d8b-9cb4-bcd45a3512f3
+
+### Get baleygr by ID
+GET {{auction_site_api_HostAddress}}/users/019ca10d-ab78-7d8b-9cb4-bcd45a3512f3
+
+### Get baleygr by username
+GET {{auction_site_api_HostAddress}}/users/baleygr
+
+### Login baleygr
+POST {{auction_site_api_HostAddress}}/users/login
+Content-Type: application/json
+
+{
+  "usernameOrEmail": "baleygr",
+  "password": "h4nd0fgr1mn1r"
+}
+
+### Delete tesuser
+DELETE {{auction_site_api_HostAddress}}/users/019ca0f7-1604-70d5-9a43-42c05792635d
+
+### Get auction
+GET {{auction_site_api_HostAddress}}/auctions/11111111-1111-1111-1111-111111111111
+### Get auction
+GET {{auction_site_api_HostAddress}}/auctions/22222222-2222-2222-2222-222222222222
+### Get auction
+GET {{auction_site_api_HostAddress}}/auctions/33333333-3333-3333-3333-333333333333
+
+### Get auctions
+GET {{auction_site_api_HostAddress}}/auctions
