@@ -34,11 +34,11 @@ public class GenericService<T> : IService<T> where T : class
     {
         var existing = await Repository.GetAsync(id);
         if (existing is null) return null;
-
-        Repository.Update(entity);
+        
+        var updated = Repository.Update(entity);
         await Repository.SaveChangesAsync();
 
-        return entity;
+        return updated;
     }
 
     public virtual async Task<bool> Delete(Guid id)

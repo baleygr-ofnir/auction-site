@@ -1,4 +1,6 @@
 using System.Text;
+using auction_site_api.Core;
+using auction_site_api.Core.Services;
 using auction_site_api.Data;
 using auction_site_api.Data.Entities;
 using auction_site_api.Data.Repositories;
@@ -22,6 +24,11 @@ public class Program
         
         // Dependency Injections
         
+        // Core DIs
+        builder.Services.AddScoped<IService<Auction>, AuctionService>();
+        builder.Services.AddScoped<IService<Bid>, BidService>();
+        builder.Services.AddScoped<IService<User>, UserService>();
+        
         // Data
         builder.Services.AddDbContext<AuctionContext>
         (
@@ -31,9 +38,9 @@ public class Program
                 ?? throw new InvalidOperationException("No connection string found.")
             )
         );
-        builder.Services.AddScoped<UserRepository>();
         builder.Services.AddScoped<AuctionRepository>();
         builder.Services.AddScoped<IRepository<Bid>, BidRepository>();
+        builder.Services.AddScoped<UserRepository>();
         builder.Services.AddAutoMapper
         (
             cfg => {},

@@ -37,8 +37,7 @@ public class UserRepository : GenericRepository<User>
 
         user.UpdatedAt = DateTime.UtcNow;
         
-        base.Update(user);
-        return updated;
+        return base.Update(user);
     }
 
     public async Task<User?> GetByUsernameAsync(string username)
