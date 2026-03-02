@@ -15,12 +15,12 @@ namespace auction_site_api.Controllers;
 [ApiController]
 public class UsersController : ControllerBase
 {
-    private readonly IRepository<User> _userRepository;
+    private readonly UserRepository _userRepository;
     private readonly IPasswordHasher<User> _passwordHasher;
     private readonly IJwtTokenService _jwtTokenService;
     private readonly IMapper _mapper;
 
-    public UsersController(IRepository<User> userRepository, IPasswordHasher<User> passwordHasher, IJwtTokenService jwtTokenService, IMapper mapper)
+    public UsersController(UserRepository userRepository, IPasswordHasher<User> passwordHasher, IJwtTokenService jwtTokenService, IMapper mapper)
     {
         _userRepository = userRepository;
         _passwordHasher = passwordHasher;
@@ -79,14 +79,13 @@ public class UsersController : ControllerBase
     [HttpPost("login")]
     public async Task<ActionResult<UserResponse>> LoginUser([FromBody] UserLoginRequest request)
     {
-        var userRepository = _userRepository as UserRepository;
-        if (userRepository is null) return StatusCode(StatusCodes.Status500InternalServerError, "User repository is unavailable");
-        
-        var user = await userRepository.GetByUsernameOrEmailAsync(request.UsernameOrEmail);
-        if (user is null) return Unauthorized("Invalid username/email or password");
+        var user = await _userRepository.GetByUsernameOrEmailAsync(request.UsernameOrEmail);
+        if (user is null) return Unauthorized("Invalid credentials.");
         
         var verification = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, request.Password);
-        if (verification == PasswordVerificationResult.Failed) return Unauthorized("Invalid username/email or password");
+        if (verification == PasswordVerificationResult.Failed) return Unauthorized("Invalid credentials.");
+
+        if (!user.IsActive) return Unauthorized("User account is deactivated.");
         
         var token = _jwtTokenService.GenerateToken(user);
         
@@ -105,21 +104,26 @@ public class UsersController : ControllerBase
     [Authorize]
     public async Task<ActionResult<UserResponse>> UpdateUser([FromRoute] Guid id, [FromBody] UserUpdateRequest request)
     {
-        var userRepository = _userRepository as UserRepository;
-        if (userRepository is null) return StatusCode(StatusCodes.Status500InternalServerError, "User repository is unavailable");
+        var userIdValue = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (string.IsNullOrWhiteSpace(userIdValue) || !Guid.TryParse(userIdValue, out var currentUserId))
+            return Unauthorized();
+
+        // If not user in question but admin, still able to update (includes deactivating user)
+        var isAdmin = User.IsInRole("Admin");
+        if (!isAdmin && currentUserId != id) return Forbid();
         
-        var user = await userRepository.GetAsync(id);
+        var user = await _userRepository.GetAsync(id);
         if (user is null) return NotFound();
         
         if (!string.IsNullOrWhiteSpace(request.Email) && !string.Equals(user.Email, request.Email, StringComparison.Ordinal))
         {
-            var existingEmail = await userRepository.GetByEmailAsync(request.Email);
+            var existingEmail = await _userRepository.GetByEmailAsync(request.Email);
             if (existingEmail is not null && existingEmail.Id != user.Id)
                 return BadRequest("Email is already registered to another user.");
         }
         
         _mapper.Map(request, user);
-        userRepository.Update(user);
+        _userRepository.Update(user);
         await _userRepository.SaveChangesAsync();
         
         var response = _mapper.Map<UserResponse>(user);
@@ -131,11 +135,19 @@ public class UsersController : ControllerBase
     [Authorize]
     public async Task<IActionResult> DeleteUser([FromRoute] Guid id)
     {
-        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        if (userId is null) return Unauthorized();
+        var userIdValue = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (string.IsNullOrWhiteSpace(userIdValue) || !Guid.TryParse(userIdValue, out var currentUserId))
+            return Unauthorized();
 
+        // If not user in question but in admin role, still able to delete user
+        var isAdmin = User.IsInRole("Admin");
+        if (!isAdmin && currentUserId != id) return Forbid();
+
+        var user = await _userRepository.GetAsync(id);
+        if (user is null) return NotFound();
+        
         bool deleted = await _userRepository.Delete(id);
-        if (!deleted) return NotFound();
+        if (!deleted) return StatusCode(StatusCodes.Status500InternalServerError, "Could not delete user.");
 
         await _userRepository.SaveChangesAsync();
         

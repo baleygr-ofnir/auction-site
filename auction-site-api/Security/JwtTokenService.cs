@@ -34,7 +34,8 @@ public class JwtTokenService : IJwtTokenService
             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new Claim(JwtRegisteredClaimNames.Iss, issuer),
-            new Claim(JwtRegisteredClaimNames.Aud, audience)
+            new Claim(JwtRegisteredClaimNames.Aud, audience),
+            new Claim(ClaimTypes.Role, user.IsAdmin ? "Admin" : "User")
         };
         
         var now = DateTime.UtcNow;

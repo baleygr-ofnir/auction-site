@@ -26,5 +26,8 @@ public class AuctionProfile : Profile
             .ForMember(dest => dest.WinningUserId, opt => opt.Ignore());
         
         CreateMap<Bid, BidSummaryResponse>();
+
+        CreateMap<BidCreateRequest, Bid>()
+            .ForMember(dest => dest.Amount, opt => opt.MapFrom(src => src.Amount));
     }
 }

@@ -44,7 +44,7 @@ Content-Type: application/json
 }
 
 ### baleygr vars
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwMTljYTEwZC1hYjc4LTdkOGItOWNiNC1iY2Q0NWEzNTEyZjMiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjAxOWNhMTBkLWFiNzgtN2Q4Yi05Y2I0LWJjZDQ1YTM1MTJmMyIsImp0aSI6ImUxOThjNWVhLTkyZDUtNDNhOS04YzVlLWMxZjE5OTllZWRmMSIsImlzcyI6ImF1Y3Rpb24tc2l0ZS1hcGkiLCJhdWQiOlsiYXVjdGlvbi1zaXRlLWFwcCIsImF1Y3Rpb24tc2l0ZS1hcHAiXSwibmJmIjoxNzcyMjMyMDE4LCJleHAiOjE3NzIyMzU2MTh9.32TpObsSAeJ7h77hQ1Ns_6YiizMBgQSJ2zwxLYpsT-0
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwMTljYTEwZC1hYjc4LTdkOGItOWNiNC1iY2Q0NWEzNTEyZjMiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjAxOWNhMTBkLWFiNzgtN2Q4Yi05Y2I0LWJjZDQ1YTM1MTJmMyIsImp0aSI6IjhkOGNjZGVmLWZkMmQtNDBiMy1iODlkLWZlYmJjOTYyNzhjOCIsImlzcyI6ImF1Y3Rpb24tc2l0ZS1hcGkiLCJhdWQiOlsiYXVjdGlvbi1zaXRlLWFwcCIsImF1Y3Rpb24tc2l0ZS1hcHAiXSwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW4iLCJuYmYiOjE3NzI0NDc4NzQsImV4cCI6MTc3MjQ1MTQ3NH0.B7enny0p3BY4S4OGGLZfDbQ4I5Rno-9rz9-VcrwraMs
 @userId = 019ca10d-ab78-7d8b-9cb4-bcd45a3512f3
 
 ### Get baleygr by ID
@@ -65,6 +65,17 @@ Content-Type: application/json
 ### Delete tesuser
 DELETE {{auction_site_api_HostAddress}}/users/019ca0f7-1604-70d5-9a43-42c05792635d
 
+### Create auction
+POST {{auction_site_api_HostAddress}}/auctions
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "title": "Test auction",
+  "Description": "Auction to test ClosedAuctionResponse",
+  "startPrice": 2599.00
+}
+
 ### Get auction
 GET {{auction_site_api_HostAddress}}/auctions/11111111-1111-1111-1111-111111111111
 ### Get auction
@@ -74,3 +85,13 @@ GET {{auction_site_api_HostAddress}}/auctions/33333333-3333-3333-3333-3333333333
 
 ### Get auctions
 GET {{auction_site_api_HostAddress}}/auctions
+
+### Deactivate auction
+PUT {{auction_site_api_HostAddress}}/auctions/33333333-3333-3333-3333-333333333333
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "isActive": false
+}
+

@@ -31,8 +31,8 @@ public class Program
                 ?? throw new InvalidOperationException("No connection string found.")
             )
         );
-        builder.Services.AddScoped<IRepository<User>, UserRepository>();
-        builder.Services.AddScoped<IRepository<Auction>, AuctionRepository>();
+        builder.Services.AddScoped<UserRepository>();
+        builder.Services.AddScoped<AuctionRepository>();
         builder.Services.AddScoped<IRepository<Bid>, BidRepository>();
         builder.Services.AddAutoMapper
         (
