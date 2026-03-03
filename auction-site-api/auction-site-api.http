@@ -13,7 +13,7 @@ Content-Type: application/json
 ### testuser2 vars
 @userId2 = 019ca10c-acbe-72cb-93cb-067a325797d9
 
-### testuser2
+### Register testuser2
 POST {{auction_site_api_HostAddress}}/users/register
 Content-Type: application/json
 
@@ -23,6 +23,14 @@ Content-Type: application/json
     "password": "P@ssword!"
 }
 
+### Login testuser2
+POST {{auction_site_api_HostAddress}}/users/login
+Content-Type: application/json
+
+{
+  "usernameOrEmail": "testuser2",
+  "password": ""
+}
 ### Disable testuser2
 PUT {{auction_site_api_HostAddress}}/users/{{userId2}}
 Content-Type: application/json
@@ -30,36 +38,6 @@ Content-Type: application/json
 {
   "isActive": true,
   "isAdmin": false
-}
-
-
-### baleygr
-POST {{auction_site_api_HostAddress}}/users/register
-Content-Type: application/json
-
-{
-  "username": "baleygr",
-  "email": "baleygr.jarngrimr@proton.me",
-  "password": "h4nd0fgr1mn1r"
-}
-
-### baleygr vars
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwMTljYTEwZC1hYjc4LTdkOGItOWNiNC1iY2Q0NWEzNTEyZjMiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjAxOWNhMTBkLWFiNzgtN2Q4Yi05Y2I0LWJjZDQ1YTM1MTJmMyIsImp0aSI6IjhkOGNjZGVmLWZkMmQtNDBiMy1iODlkLWZlYmJjOTYyNzhjOCIsImlzcyI6ImF1Y3Rpb24tc2l0ZS1hcGkiLCJhdWQiOlsiYXVjdGlvbi1zaXRlLWFwcCIsImF1Y3Rpb24tc2l0ZS1hcHAiXSwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW4iLCJuYmYiOjE3NzI0NDc4NzQsImV4cCI6MTc3MjQ1MTQ3NH0.B7enny0p3BY4S4OGGLZfDbQ4I5Rno-9rz9-VcrwraMs
-@userId = 019ca10d-ab78-7d8b-9cb4-bcd45a3512f3
-
-### Get baleygr by ID
-GET {{auction_site_api_HostAddress}}/users/019ca10d-ab78-7d8b-9cb4-bcd45a3512f3
-
-### Get baleygr by username
-GET {{auction_site_api_HostAddress}}/users/baleygr
-
-### Login baleygr
-POST {{auction_site_api_HostAddress}}/users/login
-Content-Type: application/json
-
-{
-  "usernameOrEmail": "baleygr",
-  "password": "h4nd0fgr1mn1r"
 }
 
 ### Delete tesuser
@@ -92,6 +70,6 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-    "isActive": false
+    "isActive": fals/home/baleygr/.dev/web/labs/lab-3/auction-sitee
 }
 
