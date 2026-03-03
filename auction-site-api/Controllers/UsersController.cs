@@ -1,12 +1,9 @@
 using System.Security.Claims;
 using auction_site_api.Contracts.User;
+using auction_site_api.Core;
+using auction_site_api.Core.Services;
 using auction_site_api.Data.Entities;
-using auction_site_api.Data.Repositories;
-using auction_site_api.Security;
-using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace auction_site_api.Controllers;
@@ -15,90 +12,47 @@ namespace auction_site_api.Controllers;
 [ApiController]
 public class UsersController : ControllerBase
 {
-    private readonly UserRepository _userRepository;
-    private readonly IPasswordHasher<User> _passwordHasher;
-    private readonly IJwtTokenService _jwtTokenService;
-    private readonly IMapper _mapper;
+    private readonly UserService _userService;
 
-    public UsersController(UserRepository userRepository, IPasswordHasher<User> passwordHasher, IJwtTokenService jwtTokenService, IMapper mapper)
+    public UsersController(IService<User> userService)
     {
-        _userRepository = userRepository;
-        _passwordHasher = passwordHasher;
-        _jwtTokenService = jwtTokenService;
-        _mapper = mapper;
-    }
-
-    [HttpGet("{id:guid}")]
-    public async Task<ActionResult<UserResponse>> GetUser([FromRoute] Guid id)
-    {
-        var user = await _userRepository.GetAsync(id);
-        if (user is null) return NotFound();
-
-        var response = _mapper.Map<UserResponse>(user);
-        return Ok(response);
-    }
-
-    [HttpGet("{username}")]
-    public async Task<ActionResult<UserResponse>> GetByUsername([FromRoute] string username)
-    {
-        var user = await _userRepository.FindAsync
-        (user => user.Username == username
-        );
-        if (!user.Any()) return NotFound();
-
-        var response = _mapper.Map<UserResponse>(user.FirstOrDefault());
-
-        return Ok(response);
+        _userService = userService as UserService ?? throw new Exception("UserService is unavailable.");
     }
 
     [HttpPost("register")]
     public async Task<ActionResult<UserResponse>> RegisterUser([FromBody] UserRegisterRequest request)
     {
-        var existingUsers = await _userRepository.FindAsync
-        (
-            user => user.Username == request.Username || user.Email == request.Email
-        );
-        if (existingUsers.Any()) return Conflict("Username or Email already exists");
-        
-        var user = _mapper.Map<User>(request);
-        user.IsAdmin = false;
-        user.IsActive = true;
-        user.CreatedAt = DateTime.UtcNow;
-        user.UpdatedAt = null;
-        user.PasswordHash = _passwordHasher.HashPassword(user, request.Password);
-        
-        await _userRepository.AddAsync(user);
-        await _userRepository.SaveChangesAsync();
-        
-        var response = _mapper.Map<UserResponse>(user);
-
-        return CreatedAtAction(nameof(GetUser), new { id = user.Id }, response);
+        var result = await _userService.RegisterUserAsync(request);
+        return CreatedAtAction(nameof(GetUser), new { id = result.Response }, result);
     }
-
 
     [HttpPost("login")]
     public async Task<ActionResult<UserResponse>> LoginUser([FromBody] UserLoginRequest request)
     {
-        var user = await _userRepository.GetByUsernameOrEmailAsync(request.UsernameOrEmail);
-        if (user is null) return Unauthorized("Invalid credentials.");
+        var result = await _userService.LoginUserAsync(request);
+        if (result.Error is not null) return BadRequest(result.Error);
         
-        var verification = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, request.Password);
-        if (verification == PasswordVerificationResult.Failed) return Unauthorized("Invalid credentials.");
-
-        if (!user.IsActive) return Unauthorized("User account is deactivated.");
-        
-        var token = _jwtTokenService.GenerateToken(user);
-        
-        var userResponse =  _mapper.Map<UserResponse>(user);
-
-        var response = new UserLoginResponse()
-        {
-            Token = token,
-            User = userResponse
-        };
-        
-        return Ok(response);
+        return Ok(result.Response);
     }
+
+    [HttpGet("{id:guid}")]
+    public async Task<ActionResult<UserResponse>> GetUser([FromRoute] Guid id)
+    {
+        var result = await _userService.GetAsync(id);
+        if (result is null) return NotFound();
+        
+        return Ok(result);
+    }
+
+    [HttpGet("{username}")]
+    public async Task<ActionResult<UserResponse>> GetByUsername([FromRoute] string username)
+    {
+        var result = await _userService.GetByUsernameAsync(username);
+        if (result is null) return NotFound();
+
+        return Ok(result);
+    }
+
 
     [HttpPut("{id:guid}")]
     [Authorize]
@@ -111,24 +65,11 @@ public class UsersController : ControllerBase
         // If not user in question but admin, still able to update (includes deactivating user)
         var isAdmin = User.IsInRole("Admin");
         if (!isAdmin && currentUserId != id) return Forbid();
+
+        var result = await _userService.UpdateUserAsync(currentUserId, request);
+        if (result.Error is not null) return BadRequest(result.Error);
         
-        var user = await _userRepository.GetAsync(id);
-        if (user is null) return NotFound();
-        
-        if (!string.IsNullOrWhiteSpace(request.Email) && !string.Equals(user.Email, request.Email, StringComparison.Ordinal))
-        {
-            var existingEmail = await _userRepository.GetByEmailAsync(request.Email);
-            if (existingEmail is not null && existingEmail.Id != user.Id)
-                return BadRequest("Email is already registered to another user.");
-        }
-        
-        _mapper.Map(request, user);
-        _userRepository.Update(user);
-        await _userRepository.SaveChangesAsync();
-        
-        var response = _mapper.Map<UserResponse>(user);
-        
-        return Ok(response);
+        return Ok(result);
     }
 
     [HttpDelete("{id:guid}")]
@@ -143,14 +84,9 @@ public class UsersController : ControllerBase
         var isAdmin = User.IsInRole("Admin");
         if (!isAdmin && currentUserId != id) return Forbid();
 
-        var user = await _userRepository.GetAsync(id);
-        if (user is null) return NotFound();
-        
-        bool deleted = await _userRepository.Delete(id);
-        if (!deleted) return StatusCode(StatusCodes.Status500InternalServerError, "Could not delete user.");
+        bool result = await _userService.Delete(id);
+        if (!result) return StatusCode(StatusCodes.Status500InternalServerError, "User deletion was unsuccessful.");
 
-        await _userRepository.SaveChangesAsync();
-        
         return NoContent();
     }
 }

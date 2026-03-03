@@ -29,16 +29,15 @@ public class GenericService<T> : IService<T> where T : class
 
     public virtual async Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate) =>
         await Repository.FindAsync(predicate);
-
-    public virtual async Task<T?> Update(Guid id, T entity)
+    
+    public async Task<T?> Update(Guid id, T entity)
     {
-        var existing = await Repository.GetAsync(id);
-        if (existing is null) return null;
-        
         var updated = Repository.Update(entity);
         await Repository.SaveChangesAsync();
 
-        return updated;
+        var stored = await Repository.GetAsync(id);
+        
+        return stored;
     }
 
     public virtual async Task<bool> Delete(Guid id)
