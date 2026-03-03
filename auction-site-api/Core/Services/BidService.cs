@@ -33,7 +33,7 @@ public class BidService : GenericService<Bid>
         return (response, null);
     }
 
-    public async Task<(bool Response, string? Error)> RemoveLatestBid(Guid auctionId)
+    public async Task<(bool Response, string? Error)> RemoveLatestBid(Guid auctionId, Guid userId)
     {
         
         var auction = await _auctionRepository.GetAsync(auctionId);
@@ -47,6 +47,7 @@ public class BidService : GenericService<Bid>
             .FirstOrDefault();
         if (latestBid is null) return (false, "There are no bids to remove.");
 
+        if (latestBid.UserId != userId) return (false, "Bid does not belong to the user requesting deletion.");
         var deleted = await Delete(latestBid.Id);
 
         return (deleted, null);

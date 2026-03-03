@@ -77,6 +77,14 @@ public class UserService : GenericService<User>
         return user is not null ? response : null;
     }
 
+    public async Task<IEnumerable<UserResponse>> GetUsers()
+    {
+        var users = await Repository.AllAsync();
+        var response = Mapper.Map<IEnumerable<UserResponse>>(users);
+
+        return response;
+    }
+    
     // Test if updates as implemented overrides
     public async Task<(UserResponse? Response, string? Error)> UpdateUserAsync(Guid id, UserUpdateRequest request)
     {

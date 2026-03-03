@@ -19,13 +19,17 @@ public class AuctionService : GenericService<Auction>
         _bidRepository = bidRepository;
     }
 
-    public async Task<AuctionResponse?> CreateBlogPostAsync(Guid userId,
+    public async Task<AuctionResponse?> CreateAuctionAsync(Guid userId,
         AuctionCreateRequest request)
     {
         var auction = Mapper.Map<Auction>(request);
         auction.CreatorId = userId;
         auction.IsActive = true;
-        auction.CreatedAt = DateTime.UtcNow;
+
+        var now = DateTime.UtcNow;
+        auction.StartTime = now;
+        auction.EndTime = now.AddDays(14);
+        auction.CreatedAt = now;
 
         var stored = await AddAsync(auction);
         var result = Mapper.Map<AuctionResponse>(stored);

@@ -44,6 +44,7 @@ public class UsersController : ControllerBase
         return Ok(result);
     }
 
+    
     [HttpGet("{username}")]
     public async Task<ActionResult<UserResponse>> GetByUsername([FromRoute] string username)
     {
@@ -53,7 +54,15 @@ public class UsersController : ControllerBase
         return Ok(result);
     }
 
-
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<UserResponse>>> GetUsers()
+    {
+        var result = await _userService.GetUsers();
+        if (!result.Any()) return NotFound();
+        
+        return Ok(result);
+    }
+    
     [HttpPut("{id:guid}")]
     [Authorize]
     public async Task<ActionResult<UserResponse>> UpdateUser([FromRoute] Guid id, [FromBody] UserUpdateRequest request)

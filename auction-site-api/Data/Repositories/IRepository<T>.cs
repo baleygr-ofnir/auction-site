@@ -3,7 +3,7 @@ using auction_site_api.Data.Entities;
 
 namespace auction_site_api.Data.Repositories;
 
-public interface IRepository<T>
+public interface IRepository<T> where T : class
 {
     Task<T> AddAsync(T entity);
     Task<T?> GetAsync(Guid id);

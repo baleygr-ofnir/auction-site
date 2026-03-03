@@ -30,7 +30,7 @@ public class AuctionsController : ControllerBase
         if (string.IsNullOrWhiteSpace(userIdClaim)) return Unauthorized();
 
         var creatorId = Guid.Parse(userIdClaim);
-        var result = await _auctionService.CreateBlogPostAsync(creatorId, request);
+        var result = await _auctionService.CreateAuctionAsync(creatorId, request);
         if (result is null) return BadRequest("Auction creation was unsuccessful.");
         
         return CreatedAtAction(nameof(GetAuction), new { id = result.Id }, result);
@@ -113,7 +113,7 @@ public class AuctionsController : ControllerBase
         if (!auction.IsActive || auction.EndTime <= DateTime.UtcNow)
             return BadRequest("Cannot place bids on closed or inactive auctions.");
 
-        if (currentUserId == auction.CreatorId) return BadRequest("Creators may not place bids on their own auctions.");
+        if (currentUserId == auction.CreatorId) return StatusCode(StatusCodes.Status403Forbidden, "Creators may not place bids on their own auctions.");
         
         var result = await _bidService.PlaceBid(currentUserId, request, auction);
         if (result.Error is not null) return BadRequest(result.Error);
@@ -129,7 +129,7 @@ public class AuctionsController : ControllerBase
         if (string.IsNullOrWhiteSpace(userIdValue) || !Guid.TryParse(userIdValue, out var currentUserId))
             return Unauthorized();
 
-        var result = await _bidService.RemoveLatestBid(auctionId);
+        var result = await _bidService.RemoveLatestBid(auctionId, currentUserId);
         if (result.Error is not null)
         {
             return BadRequest(result.Error);

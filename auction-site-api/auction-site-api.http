@@ -10,6 +10,16 @@ Content-Type: application/json
     "password": "P@ssword!"
 }
 
+### Login testuser1
+@token1=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwMTljYTEwYy05N2QxLTc2MGUtOGFhYi00NTdiYjg4MmFiOTQiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjAxOWNhMTBjLTk3ZDEtNzYwZS04YWFiLTQ1N2JiODgyYWI5NCIsImp0aSI6Ijg4NTE5Y2E0LTY5YWYtNDYwNi1hYzFjLTIxNGU5ZTkzYmU0ZSIsImlzcyI6ImF1Y3Rpb24tc2l0ZS1hcGkiLCJhdWQiOlsiYXVjdGlvbi1zaXRlLWFwcCIsImF1Y3Rpb24tc2l0ZS1hcHAiXSwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiVXNlciIsIm5iZiI6MTc3MjU1MjQ3MiwiZXhwIjoxNzcyNTU2MDcyfQ.PVCSvMDG0q83kmg6W28Jxj32hUGYzuPJ6dFTWviokhA
+POST {{auction_site_api_HostAddress}}/users/login
+Content-Type: application/json
+
+{
+  "usernameOrEmail": "testuser1",
+  "password": "P@ssword!"
+}
+
 ### testuser2 vars
 @userId2 = 019ca10c-acbe-72cb-93cb-067a325797d9
 
@@ -24,12 +34,13 @@ Content-Type: application/json
 }
 
 ### Login testuser2
+@token2=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwMTljYTEwYy1hY2JlLTcyY2ItOTNjYi0wNjdhMzI1Nzk3ZDkiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjAxOWNhMTBjLWFjYmUtNzJjYi05M2NiLTA2N2EzMjU3OTdkOSIsImp0aSI6IjRmMDUwM2M0LTMzNzItNGE0ZS05MTM1LWYwZDgzNjEwOTliMSIsImlzcyI6ImF1Y3Rpb24tc2l0ZS1hcGkiLCJhdWQiOlsiYXVjdGlvbi1zaXRlLWFwcCIsImF1Y3Rpb24tc2l0ZS1hcHAiXSwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiVXNlciIsIm5iZiI6MTc3MjU1MTM3MiwiZXhwIjoxNzcyNTU0OTcyfQ.yBBskf-PjSCT5YihnVA7e8nv-eT5R4yuMxkhf-oImjE
 POST {{auction_site_api_HostAddress}}/users/login
 Content-Type: application/json
 
 {
   "usernameOrEmail": "testuser2",
-  "password": ""
+  "password": "P@ssword!"
 }
 ### Disable testuser2
 PUT {{auction_site_api_HostAddress}}/users/{{userId2}}
@@ -46,13 +57,16 @@ DELETE {{auction_site_api_HostAddress}}/users/019ca0f7-1604-70d5-9a43-42c0579263
 ### Create auction
 POST {{auction_site_api_HostAddress}}/auctions
 Content-Type: application/json
-Authorization: Bearer {{token}}
+Authorization: Bearer {{token2}}
 
 {
-  "title": "Test auction",
-  "Description": "Auction to test ClosedAuctionResponse",
-  "startPrice": 2599.00
+  "title": "Xiaomi Redmi Note 14 Pro+",
+  "Description": "Smartphone from Xiaomi",
+  "startPrice": 3499.00
 }
+
+### Get users
+GET {{auction_site_api_HostAddress}}/users
 
 ### Get auction
 GET {{auction_site_api_HostAddress}}/auctions/11111111-1111-1111-1111-111111111111
@@ -60,16 +74,31 @@ GET {{auction_site_api_HostAddress}}/auctions/11111111-1111-1111-1111-1111111111
 GET {{auction_site_api_HostAddress}}/auctions/22222222-2222-2222-2222-222222222222
 ### Get auction
 GET {{auction_site_api_HostAddress}}/auctions/33333333-3333-3333-3333-333333333333
+### Get auction
+GET {{auction_site_api_HostAddress}}/auctions/019cb450-d6aa-729d-bf2d-677050b5f8d6
 
 ### Get auctions
 GET {{auction_site_api_HostAddress}}/auctions
 
 ### Deactivate auction
-PUT {{auction_site_api_HostAddress}}/auctions/33333333-3333-3333-3333-333333333333
+PUT {{auction_site_api_HostAddress}}/auctions/019cb450-d6aa-729d-bf2d-677050b5f8d6
 Content-Type: application/json
-Authorization: Bearer {{token}}
+Authorization: Bearer {{token2}}
 
 {
-    "isActive": fals/home/baleygr/.dev/web/labs/lab-3/auction-sitee
+    "isActive": true
 }
+
+### Place bid as testuser1
+POST {{auction_site_api_HostAddress}}/Auctions/019cb450-d6aa-729d-bf2d-677050b5f8d6/bids
+Content-Type: application/json
+Authorization: Bearer {{token1}}
+
+{
+  "amount": 3749.00
+}
+
+### Remove latest bid
+DELETE {{auction_site_api_HostAddress}}/Auctions/019cb450-d6aa-729d-bf2d-677050b5f8d6/bids/latest
+Authorization: Bearer {{token1}}
 

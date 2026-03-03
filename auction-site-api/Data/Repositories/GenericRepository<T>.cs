@@ -6,13 +6,13 @@ namespace auction_site_api.Data.Repositories;
 
 public abstract class GenericRepository<T> : IRepository<T> where T : class
 {
-    protected readonly AuctionContext _context;
+    protected readonly AuctionContext Context;
     protected readonly DbSet<T> DbSet;
     
     public GenericRepository(AuctionContext context)
     {
-        _context = context;
-        DbSet = _context.Set<T>();
+        Context = context;
+        DbSet = Context.Set<T>();
     }
     
     public virtual async Task<T> AddAsync(T entity)
@@ -57,6 +57,6 @@ public abstract class GenericRepository<T> : IRepository<T> where T : class
 
     public async Task<int> SaveChangesAsync()
     {
-        return await _context.SaveChangesAsync();
+        return await Context.SaveChangesAsync();
     }
 }
