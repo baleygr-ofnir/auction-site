@@ -23,14 +23,14 @@ public class UsersController : ControllerBase
     public async Task<ActionResult<UserResponse>> RegisterUser([FromBody] UserRegisterRequest request)
     {
         var result = await _userService.RegisterUserAsync(request);
-        return CreatedAtAction(nameof(GetUser), new { id = result.Response }, result);
+        return CreatedAtAction(nameof(GetUser), new { id = result.Response }, result.Response);
     }
 
     [HttpPost("login")]
-    public async Task<ActionResult<UserResponse>> LoginUser([FromBody] UserLoginRequest request)
+    public async Task<ActionResult<UserLoginResponse>> LoginUser([FromBody] UserLoginRequest request)
     {
         var result = await _userService.LoginUserAsync(request);
-        if (result.Error is not null) return BadRequest(result.Error);
+        if (result.Error is not null) return Unauthorized(result.Error);
         
         return Ok(result.Response);
     }
@@ -75,7 +75,7 @@ public class UsersController : ControllerBase
         var isAdmin = User.IsInRole("Admin");
         if (!isAdmin && currentUserId != id) return Forbid();
 
-        var result = await _userService.UpdateUserAsync(currentUserId, request);
+        var result = await _userService.UpdateUserAsync(id, request);
         if (result.Error is not null) return BadRequest(result.Error);
         
         return Ok(result);

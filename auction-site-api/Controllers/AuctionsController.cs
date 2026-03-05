@@ -47,10 +47,11 @@ public class AuctionsController : ControllerBase
     }
 
     [HttpGet]
+    [AllowAnonymous]
     public async Task<ActionResult<IEnumerable<AuctionListItemResponse>>> GetAuctions([FromQuery] string? query)
     {
         var result = await _auctionService.GetAuctionsAsync(query?.Trim());
-        if (!result.Any()) return NotFound();
+        if (!result.Any()) return Ok(Array.Empty<AuctionListItemResponse>());
         
         return Ok(result);
     }

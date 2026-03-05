@@ -11,4 +11,5 @@ public class ClosedAuctionResponse
     public bool IsActive { get; set; }
     public decimal? WinningBidAmount { get; set; }
     public Guid? WinningUserId { get; set; }
+    public Guid CreatorId { get; set; }
 }
