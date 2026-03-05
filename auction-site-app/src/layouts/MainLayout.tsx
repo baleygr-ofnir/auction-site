@@ -1,4 +1,4 @@
-import { useState, type SubmitEvent } from 'react';
+import { useState, type ChangeEvent, type SubmitEvent } from 'react';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 import { DesktopNav } from '@/layouts/components/DesktopNav'
 import { MobileNav } from '@/layouts/components/MobileNav';
@@ -9,7 +9,7 @@ export default function MainLayout() {
     const navigate = useNavigate();
     const { session, logout } = useAuth();
     
-    const handleSearch = (event: SubmitEvent) => {
+    const handleSearch = (event: ChangeEvent | SubmitEvent) => {
         event.preventDefault();
         if (query.trim() !== '') {
             navigate(`/auctions?search=${encodeURIComponent(query)}`);
@@ -28,6 +28,7 @@ export default function MainLayout() {
                     query={query}
                     setQuery={setQuery}
                     onSearch={handleSearch}
+                    onChange={handleSearch}
                     logout={logout}
                 />
 
@@ -37,6 +38,7 @@ export default function MainLayout() {
                     query={query}
                     setQuery={setQuery}
                     onSearch={handleSearch}
+                    onChange={handleSearch}
                     logout={logout}
                 />
             </header>

@@ -61,7 +61,7 @@ export function BidForm({ auctionId, currentPrice, onBidSuccess}: BidContainerPr
                 htmlFor="bidAmount"
                 className="flex gap-2"
             >
-                Your Max Bid (kr)
+                <p className="text-indigo-400">Your Max Bid (kr)</p>
             </Label>
             <div className="flex gap-2">
                 <Input
@@ -78,7 +78,7 @@ export function BidForm({ auctionId, currentPrice, onBidSuccess}: BidContainerPr
                 />
                 <Button
                     type="submit"
-                    className="bg-blue-600 hover:bg-blue-700 text-white min-w-25"
+                    className="bg-indigo-600 hover:bg-indigo-700 text-white min-w-25"
                 >
                     {isLoading ? <Loader2 className="flex items-center gap-2 text-red-400 text-sm mt-2" /> : 'Place Bid'}
                 </Button>

@@ -2,9 +2,9 @@ import api from '@/lib/client';
 import type { AuctionListItemResponse, AuctionResponse, AuctionDetailResponse, AuctionCreateRequest, AuctionUpdateRequest } from '@/types/auction';
 
 export const auctionService = {
-    async getAuctions(query?: string): Promise<AuctionListItemResponse[]> {
+    async getAuctions(search?: string): Promise<AuctionListItemResponse[]> {
         const response = await api.get<AuctionListItemResponse[]>('/auctions', {
-            params: { query: query?.trim() }
+            params: { search: search?.trim() }
         });
         return response.data;
     },

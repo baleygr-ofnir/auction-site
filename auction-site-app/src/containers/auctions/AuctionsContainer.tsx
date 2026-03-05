@@ -46,7 +46,7 @@ export function AuctionsContainer() {
     if (auctions.length === 0) {
         return (
             <div className="text-center py-20 text-slate-400 bg-slate-900/50 rounded-lg border border-slate-800">
-                No active auctions found {searchQuery && `for search term: "${searchQuery}`}.
+                No active auctions found {searchQuery && `for this search term: "${searchQuery}"`}.
             </div>
         );
     }
@@ -56,16 +56,16 @@ export function AuctionsContainer() {
             {auctions.map((auction) => (
                 <Card
                     key={auction.id}
-                    className="bg-slate-900 border-slate-800 flex flex-col hover:border-slate-700 transition-colors"
+                    className="bg-slate-900 border-indigo-900 flex flex-col hover:border-indigo-700 transition-colors"
                 >
                     <CardHeader>
-                        <CardTitle className="text-slate-100 line-clamp-1">{auction.title}</CardTitle>
+                        <CardTitle className="text-indigo-100 line-clamp-1">{auction.title}</CardTitle>
                     </CardHeader>
                     <CardContent className="grow">
                         <div className="flex flex-col gap-3">
                             <div className="flex items-center justify-between">
                                 <span className="text-slate-400 text-sm">Current Bid</span>
-                                <span className="text-blue-400 font-bold text-lg">
+                                <span className="text-indigo-400 font-bold text-lg">
                                     {auction.currentPrice.toLocaleString()} kr
                                 </span>
                             </div>
@@ -80,7 +80,7 @@ export function AuctionsContainer() {
                             to={`/auctions/${auction.id}`}
                             className="w-full"
                         >
-                            <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
+                            <Button className="w-full bg-indigo-900 hover:bg-indigo-900 text-white">
                                 <Gavel className="mr-2 h-4 w-">View Auction</Gavel>
                             </Button>
                         </Link>

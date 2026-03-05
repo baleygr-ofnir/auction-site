@@ -1,4 +1,4 @@
-import { type SubmitEvent } from 'react';
+import { type ChangeEvent, type SubmitEvent } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -12,6 +12,7 @@ interface MobileNavProps {
     query: string;
     setQuery: (value: string) => void;
     onSearch: (event: SubmitEvent) => void;
+    onChange: (event: ChangeEvent) => void
 }
 
 export function MobileNav({
@@ -19,10 +20,11 @@ export function MobileNav({
     logout,
     query,
     setQuery,
-    onSearch
+    onSearch,
+    onChange
 }: MobileNavProps) {
     return (
-        <div className="md:hidden bg-slate-1000">
+        <div className="xl:hidden bg-slate-1000">
             <Sheet>
                 <SheetTrigger asChild>
                     <Button
@@ -40,6 +42,7 @@ export function MobileNav({
                     <br />
                     <form
                         onSubmit={onSearch}
+                        onChange={onChange}
                         className="flex gap-2"
                     >
                         <Input 
@@ -50,8 +53,9 @@ export function MobileNav({
                                 element =>
                                 setQuery(element.target.value)
                             )}
+                            className="text-indigo-100"
                         />
-                        <Button type="submit">Search</Button>
+                        <Button type="submit" className="text-indigo-300">Search</Button>
                     </form>
 
                     {session ? (

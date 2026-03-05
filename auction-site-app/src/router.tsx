@@ -4,6 +4,7 @@ import RegisterPage from '@/pages/RegisterPage';
 import AuctionsPage from '@/pages/AuctionsPage';
 import AuctionPage from '@/pages/AuctionPage';
 import MainLayout from "@/layouts/MainLayout.tsx";
+import CreateAuctionPage from '@/pages/CreateAuctionPage';
 //import { ProtectedRoute } from '@/components/ProtectedRoute';
 
 export const router = createBrowserRouter([
@@ -22,6 +23,10 @@ export const router = createBrowserRouter([
             {
                 path: "auctions/:id",
                 element: <AuctionPage />,
+            },
+            {
+                path: "auctions/create",
+                element: <CreateAuctionPage />,
             },
             {
                 path: "login",

@@ -60,7 +60,7 @@ export function AuctionContainer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="md:col-span-2 space-y-6">
                 <div className="flex justify-between items-start">
-                    <h1 className="text-4xl font-bold text-slate-100">{auction.title}</h1>
+                    <h1 className="text-4xl font-bold text-indigo-200">{auction.title}</h1>
                     <Badge variant={isClosed ? "destructive" : "default"}>
                         {isClosed ? "Closed" : "Active"}
                     </Badge>
@@ -70,8 +70,8 @@ export function AuctionContainer() {
                     {auction.description}
                 </p>
                 
-                <div className="bg-slate-900 border border-slate-800 rounded-lg p-6 flex items-center gap-4">
-                    <Clock className="text-blue-400 h-6 w-6" />
+                <div className="bg-slate-900 border border-slate-800 rounded-lg p-6 flex items-center gap-4 h-26">
+                    <Clock className="text-indigo-300 h-6 w-6" />
                     <div>
                         <p className="text-slate-500 text-sm uppercase font-bold tracking-wider">Ends at</p>
                         <p className="text-slate-200">{new Date(auction.endTime).toLocaleString()}</p>
@@ -101,7 +101,7 @@ export function AuctionContainer() {
                             </div>
                         ) : (
                             <div className="flex flex-col gap-2">
-                                <span className="text-3xl font-bold text-blue-400">
+                                <span className="text-3xl font-bold text-indigo-400">
                                     {currentPrice.toLocaleString()} kr
                                 </span>
                                 <div className="flex items-center gap-2 text-slate-400">
