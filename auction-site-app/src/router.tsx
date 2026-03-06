@@ -35,8 +35,8 @@ export const router = createBrowserRouter([
                         children: [
                             { index: true, element: <AuctionPage /> },
                             {
-                                element: <AuctionOwnerGuard />,
                                 loader: editAuctionLoader,
+                                element: <AuctionOwnerGuard />,
                                 children: [
                                     { path: "edit", element: <EditAuctionPage /> }
                                 ]
