@@ -11,7 +11,7 @@ Content-Type: application/json
 }
 
 ### Login testuser1
-@token1=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwMTljYTEwYy05N2QxLTc2MGUtOGFhYi00NTdiYjg4MmFiOTQiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjAxOWNhMTBjLTk3ZDEtNzYwZS04YWFiLTQ1N2JiODgyYWI5NCIsImp0aSI6Ijg4NTE5Y2E0LTY5YWYtNDYwNi1hYzFjLTIxNGU5ZTkzYmU0ZSIsImlzcyI6ImF1Y3Rpb24tc2l0ZS1hcGkiLCJhdWQiOlsiYXVjdGlvbi1zaXRlLWFwcCIsImF1Y3Rpb24tc2l0ZS1hcHAiXSwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiVXNlciIsIm5iZiI6MTc3MjU1MjQ3MiwiZXhwIjoxNzcyNTU2MDcyfQ.PVCSvMDG0q83kmg6W28Jxj32hUGYzuPJ6dFTWviokhA
+@token1=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwMTljYTEwZC1hYjc4LTdkOGItOWNiNC1iY2Q0NWEzNTEyZjMiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjAxOWNhMTBkLWFiNzgtN2Q4Yi05Y2I0LWJjZDQ1YTM1MTJmMyIsImp0aSI6ImU3ZjBjM2FlLWYzNTgtNGEzOS05MWY0LTY3NDhjMGFkZTNlZSIsImlzcyI6ImF1Y3Rpb24tc2l0ZS1hcGkiLCJhdWQiOlsiYXVjdGlvbi1zaXRlLWFwcCIsImF1Y3Rpb24tc2l0ZS1hcHAiXSwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW4iLCJuYmYiOjE3NzI3NjkzMTksImV4cCI6MTc3Mjc3MjkxOX0.lFeL-AkMNn7pu9d9rlV8qeREA3W0wzYLx9Dl3T9wXEA
 POST {{auction_site_api_HostAddress}}/users/login
 Content-Type: application/json
 
@@ -43,12 +43,12 @@ Content-Type: application/json
   "password": "P@ssword!"
 }
 ### Disable testuser2
-PUT {{auction_site_api_HostAddress}}/users/{{userId2}}
+PUT {{auction_site_api_HostAddress}}/users/019ca10c-acbe-72cb-93cb-067a325797d9
 Content-Type: application/json
+Authorization: Bearer {{token1}}
 
 {
-  "isActive": true,
-  "isAdmin": false
+  "isActive": false
 }
 
 ### Delete tesuser

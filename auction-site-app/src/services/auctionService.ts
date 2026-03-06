@@ -1,10 +1,16 @@
 import api from '@/lib/client';
 import type { AuctionListItemResponse, AuctionResponse, AuctionDetailResponse, AuctionCreateRequest, AuctionUpdateRequest } from '@/types/auction';
 
-export const auctionService = {
+const auctionService = {
     async getAuctions(search?: string): Promise<AuctionListItemResponse[]> {
         const response = await api.get<AuctionListItemResponse[]>('/auctions', {
             params: { search: search?.trim() }
+        });
+        return response.data;
+    },
+    async getActiveAuctions(search?: string): Promise<AuctionListItemResponse[]> {
+        const response = await api.get<AuctionListItemResponse[]>('/auctions/active', {
+            params: {search: search?.trim()}
         });
         return response.data;
     },
@@ -24,3 +30,5 @@ export const auctionService = {
         await api.delete(`/auctions/${id}`);
     }
 }
+
+export default auctionService;

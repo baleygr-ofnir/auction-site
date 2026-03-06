@@ -1,10 +1,14 @@
+// Libraries
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
-import { auctionService } from '@/services/auctionService';
+import { z } from 'zod';
+// Custom hooks and services
+import auctionService from '@/services/auctionService';
+// Custom types
 import type { AuctionCreateRequest } from '@/types/auction';
+// Reusable UI components
 import {Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';

@@ -48,14 +48,24 @@ public class AuctionsController : ControllerBase
 
     [HttpGet]
     [AllowAnonymous]
-    public async Task<ActionResult<IEnumerable<AuctionListItemResponse>>> GetAuctions([FromQuery] string? query)
+    public async Task<ActionResult<IEnumerable<AuctionListItemResponse>>> GetAuctions([FromQuery] string? search)
     {
-        var result = await _auctionService.GetAuctionsAsync(query?.Trim());
+        var result = await _auctionService.GetAuctionsAsync(null, false, search?.Trim());
         if (!result.Any()) return Ok(Array.Empty<AuctionListItemResponse>());
         
         return Ok(result);
     }
 
+    [HttpGet("active")]
+    [AllowAnonymous]
+    public async Task<ActionResult<IEnumerable<AuctionListItemResponse>>> SearchActiveAuctions([FromQuery] string? search)
+    {
+        var result = await _auctionService.GetAuctionsAsync(null, true, search?.Trim());
+        if (!result.Any()) return Ok(Array.Empty<AuctionListItemResponse>());
+        
+        return Ok(result);
+    }
+    
     [HttpPut("{id:guid}")]
     [Authorize]
     public async Task<ActionResult<AuctionResponse>> UpdateAuction([FromRoute] Guid id, [FromBody] AuctionUpdateRequest request)
@@ -98,6 +108,8 @@ public class AuctionsController : ControllerBase
     }
     
     // BIDDING ROUTES
+
+    
     [HttpPost("{auctionId:guid}/bids")]
     [Authorize]
     public async Task<ActionResult<BidSummaryResponse>> PlaceBid([FromRoute] Guid auctionId, [FromBody] BidCreateRequest request)

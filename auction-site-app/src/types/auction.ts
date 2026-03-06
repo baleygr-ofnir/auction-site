@@ -44,8 +44,9 @@ export interface ClosedAuctionResponse {
 export type AuctionDetailResponse = AuctionResponse | ClosedAuctionResponse;
 
 export interface AuctionUpdateRequest {
-    title: string;
-    description: string;
-    endTime: Date;
-    isActive: boolean;
+    title?: string;
+    description?: string;
+    startPrice?: number;
+    endTime?: Date;
+    isActive?: boolean;
 }

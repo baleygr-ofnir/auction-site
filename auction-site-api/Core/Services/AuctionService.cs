@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Linq.Expressions;
 using auction_site_api.Contracts.Auction;
 using auction_site_api.Contracts.Bid;
 using auction_site_api.Data.Entities;
@@ -66,9 +68,22 @@ public class AuctionService : GenericService<Auction>
         return (null, closedResponse);
     }
 
-    public async Task<IEnumerable<AuctionListItemResponse>> GetAuctionsAsync(string? query)
+    public async Task<IEnumerable<AuctionListItemResponse>> GetAuctionsAsync(Guid? userId, bool searching, string? query)
     {
-        var auctions = await _auctionRepository.SearchActiveAsync(query?.Trim());
+        IEnumerable<Auction> auctions;
+
+        if (userId != null)
+        {
+            auctions = await _auctionRepository.FindAsync(auction => auction.CreatorId == userId);
+        }
+        else if (searching)
+        {
+            auctions = await _auctionRepository.SearchActiveAsync(query?.Trim());
+        }
+        else
+        {
+            auctions = await _auctionRepository.AllAsync();
+        }
 
         var response = auctions.Select<Auction, AuctionListItemResponse>(auction =>
         {

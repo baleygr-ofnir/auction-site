@@ -1,4 +1,6 @@
 using System.Security.Claims;
+using auction_site_api.Contracts.Auction;
+using auction_site_api.Contracts.Bid;
 using auction_site_api.Contracts.User;
 using auction_site_api.Core;
 using auction_site_api.Core.Services;
@@ -13,10 +15,14 @@ namespace auction_site_api.Controllers;
 public class UsersController : ControllerBase
 {
     private readonly UserService _userService;
+    private readonly AuctionService _auctionService;
+    private readonly BidService _bidService;
 
-    public UsersController(IService<User> userService)
+    public UsersController(IService<User> userService, IService<Auction> auctionService, IService<Bid> bidService)
     {
         _userService = userService as UserService ?? throw new Exception("UserService is unavailable.");
+        _auctionService = auctionService as AuctionService ?? throw new Exception("AuctionService is unavailable");
+        _bidService = bidService as BidService ?? throw new Exception("BidService is unavailable.");
     }
 
     [HttpPost("register")]
@@ -97,5 +103,25 @@ public class UsersController : ControllerBase
         if (!result) return StatusCode(StatusCodes.Status500InternalServerError, "User deletion was unsuccessful.");
 
         return NoContent();
+    }
+
+    [HttpGet("{id:guid}/auctions")]
+    [Authorize]
+    public async Task<ActionResult<IEnumerable<AuctionListItemResponse>>> GetUserAuctions([FromRoute] Guid id)
+    {
+        var result = await _auctionService.GetAuctionsAsync(userId: id, false, query: null);
+        if (!result.Any()) return Ok(Array.Empty<AuctionListItemResponse>());
+
+        return Ok(result);
+    }
+    
+    [HttpGet("{id:guid}/bids")]
+    [Authorize]
+    public async Task<ActionResult<IEnumerable<BidSummaryResponse>>> GetUserBids([FromRoute] Guid id)
+    {
+        var result = await _bidService.GetUserBidsAsync(id);
+        if (!result.Any()) return Ok(Array.Empty<BidSummaryResponse>());
+        
+        return Ok(result);
     }
 }

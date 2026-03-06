@@ -1,3 +1,4 @@
+using System.Collections;
 using auction_site_api.Contracts.Bid;
 using auction_site_api.Data.Entities;
 using auction_site_api.Data.Repositories;
@@ -11,6 +12,15 @@ public class BidService : GenericService<Bid>
     public BidService(IRepository<Bid> repository, IRepository<Auction> auctionRepository, IMapper mapper) : base(repository, mapper)
     {
         _auctionRepository = auctionRepository;
+    }
+
+    public async Task<IEnumerable<BidSummaryResponse>?> GetUserBidsAsync(Guid userId)
+    {
+        var bids = await Repository.FindAsync(bid => bid.UserId == userId);
+        
+        var response = bids.Select<Bid, BidSummaryResponse>(bid => Mapper.Map<BidSummaryResponse>(bid)).ToList();
+        
+        return response;
     }
 
     public async Task<(BidSummaryResponse? Response, string? Error)> PlaceBid(Guid userId, BidCreateRequest request, Auction auction)

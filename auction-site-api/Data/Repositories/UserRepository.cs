@@ -31,7 +31,7 @@ public class UserRepository : GenericRepository<User>
             user.PasswordHash = updated.PasswordHash;
         }
 
-        if (user.IsActive != updated.IsActive) user.IsActive = updated.IsActive;
+        user.IsActive = updated.IsActive;
 
         if (user.IsAdmin != updated.IsAdmin) user.IsAdmin = updated.IsAdmin;
 

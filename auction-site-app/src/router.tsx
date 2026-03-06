@@ -1,42 +1,68 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom';
+import MainLayout from "@/layouts/MainLayout";
 import LoginPage from '@/pages/LoginPage';
 import RegisterPage from '@/pages/RegisterPage';
 import AuctionsPage from '@/pages/AuctionsPage';
 import AuctionPage from '@/pages/AuctionPage';
-import MainLayout from "@/layouts/MainLayout.tsx";
 import CreateAuctionPage from '@/pages/CreateAuctionPage';
-//import { ProtectedRoute } from '@/components/ProtectedRoute';
+import ProfilePage from '@/pages/ProfilePage';
+import AdminPage from '@/pages/AdminPage';
+import EditAuctionPage from '@/pages/EditAuctionPage';
+import {ProtectedRoute} from '@/components/ProtectedRoute';
+import AuctionOwnerGuard from '@/components/AuctionOwnerGuard';
+import {editAuctionLoader} from '@/lib/auth-check';
 
 export const router = createBrowserRouter([
     {
         path: "/",
-        element: <MainLayout />, // The parent layout
+        element: <MainLayout />,
         children: [
-            {
-                index: true, // This makes AuctionsPage show up at "/"
-                element: <Navigate to="/auctions" replace />,
-            },
+            { index: true, element: <Navigate to="/auctions" replace /> },
             {
                 path: "auctions",
-                element: <AuctionsPage />,
+                children: [
+                    { index: true, element: <AuctionsPage /> },
+                    {
+                        path: "create",
+                        element: (
+                            <ProtectedRoute>
+                                <CreateAuctionPage />
+                            </ProtectedRoute>
+                        )
+                    },
+                    {
+                        path: ":id",
+                        children: [
+                            { index: true, element: <AuctionPage /> },
+                            {
+                                element: <AuctionOwnerGuard />,
+                                loader: editAuctionLoader,
+                                children: [
+                                    { path: "edit", element: <EditAuctionPage /> }
+                                ]
+                            },
+                        ]
+                    },
+                ]
+            },
+            { path: "login", element: <LoginPage /> },
+            { path: "register", element: <RegisterPage /> },
+            {
+                path: "profile",
+                element: (
+                    <ProtectedRoute>
+                        <ProfilePage />
+                    </ProtectedRoute>
+                )
             },
             {
-                path: "auctions/:id",
-                element: <AuctionPage />,
+                path: "admin",
+                element: (
+                    <ProtectedRoute requireAdmin>
+                        <AdminPage />
+                    </ProtectedRoute>
+                )
             },
-            {
-                path: "auctions/create",
-                element: <CreateAuctionPage />,
-            },
-            {
-                path: "login",
-                element: <LoginPage />,
-            },
-            {
-                path: "register",
-                element: <RegisterPage />,
-            }
-            // ... Admin and Catch-all routes
         ],
     },
 ]);

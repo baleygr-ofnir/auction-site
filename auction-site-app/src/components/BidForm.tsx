@@ -1,5 +1,5 @@
 import { useState, type SubmitEvent } from 'react';
-import { bidService } from '@/services/bidService';
+import bidService from '@/services/bidService';
 import { useAuth } from '@/context/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -26,7 +26,7 @@ export function BidForm({ auctionId, currentPrice, onBidSuccess}: BidContainerPr
         const bidAmount = parseFloat(amount);
         
         if (isNaN(bidAmount) || bidAmount <= currentPrice) {
-            setError(`Your bid must be higher than ${currentPrice.toLocaleString()} kr`);
+            setError(`Your bid must be higher than ${currentPrice} kr`);
             return;
         }
         

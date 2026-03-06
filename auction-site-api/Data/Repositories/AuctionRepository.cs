@@ -32,7 +32,7 @@ public class AuctionRepository : GenericRepository<Auction>
             .Include(auction => auction.Bids)
             .Where(auction => auction.IsActive && auction.EndTime > now);
 
-        if (!string.IsNullOrWhiteSpace(query)) auctions = auctions.Where(auction => auction.Title.Contains(query));
+        if (!string.IsNullOrWhiteSpace(query)) auctions = auctions.Where(auction => auction.Title.ToLower().Contains(query.ToLower()));
 
         return await auctions
             .AsNoTracking()
@@ -64,6 +64,14 @@ public class AuctionRepository : GenericRepository<Auction>
             auction.Description = updated.Description;
         }
 
+        if (updated.StartPrice > 0 && auction.StartPrice != updated.StartPrice)
+        {
+            if (!auction.Bids.Any())
+            {
+                auction.StartPrice = updated.StartPrice;
+            }
+        }
+        
         if (updated.EndTime != default && auction.EndTime != updated.EndTime)
         {
             auction.EndTime = updated.EndTime;

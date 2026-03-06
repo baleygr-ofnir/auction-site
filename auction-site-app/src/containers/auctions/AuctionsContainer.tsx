@@ -1,7 +1,11 @@
+// Libraries
 import { useEffect, useState } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
-import { auctionService } from '@/services/auctionService';
+// Custom hooks and services
+import auctionService from '@/services/auctionService';
+// Custom types
 import type { AuctionListItemResponse } from '@/types/auction.ts';
+// Reusable UI components
 import { Card, CardHeader, CardFooter, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Gavel, Clock, AlertCircle } from 'lucide-react';
@@ -19,7 +23,7 @@ export function AuctionsContainer() {
             setIsLoading(true);
             
             try {
-                const data = await auctionService.getAuctions(searchQuery);
+                const data = await auctionService.getActiveAuctions(searchQuery);
                 setAuctions(data);
                 setError(null);
             } catch (error) {
@@ -59,14 +63,14 @@ export function AuctionsContainer() {
                     className="bg-slate-900 border-indigo-900 flex flex-col hover:border-indigo-700 transition-colors"
                 >
                     <CardHeader>
-                        <CardTitle className="text-indigo-100 line-clamp-1">{auction.title}</CardTitle>
+                        <CardTitle className="text-slate-200 line-clamp-1">{auction.title}</CardTitle>
                     </CardHeader>
                     <CardContent className="grow">
                         <div className="flex flex-col gap-3">
                             <div className="flex items-center justify-between">
                                 <span className="text-slate-400 text-sm">Current Bid</span>
-                                <span className="text-indigo-400 font-bold text-lg">
-                                    {auction.currentPrice.toLocaleString()} kr
+                                <span className="text-green-400 font-bold text-lg">
+                                    {auction.currentPrice} kr
                                 </span>
                             </div>
                             <div className="flex items-center gap-2 text-slate-400 text-sm">
@@ -81,7 +85,7 @@ export function AuctionsContainer() {
                             className="w-full"
                         >
                             <Button className="w-full bg-indigo-900 hover:bg-indigo-900 text-white">
-                                <Gavel className="mr-2 h-4 w-">View Auction</Gavel>
+                                <Gavel className="mr-2 h-4 w-4">View Auction</Gavel>
                             </Button>
                         </Link>
                     </CardFooter>

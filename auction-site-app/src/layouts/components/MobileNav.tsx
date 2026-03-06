@@ -12,7 +12,7 @@ interface MobileNavProps {
     query: string;
     setQuery: (value: string) => void;
     onSearch: (event: SubmitEvent) => void;
-    onChange: (event: ChangeEvent) => void
+    onChange: (event: ChangeEvent) => void;
 }
 
 export function MobileNav({
@@ -42,28 +42,39 @@ export function MobileNav({
                     <br />
                     <form
                         onSubmit={onSearch}
-                        onChange={onChange}
+                        onChange={(event) => setQuery(event.target.value)}
                         className="flex gap-2"
                     >
                         <Input 
                             type="text"
                             placeholder="Search..."
                             value={query}
-                            onChange={(
-                                element =>
-                                setQuery(element.target.value)
-                            )}
-                            className="text-indigo-100"
+                            onChange={onChange}
+                            className="text-slate-100"
                         />
-                        <Button type="submit" className="text-indigo-300">Search</Button>
+                        <Button
+                            type="submit"
+                            className="text-slate-300"
+                        >Search</Button>
                     </form>
 
                     {session ? (
                         <>
+                            {session.user.isAdmin && (
+                                <Link to="/admin">
+                                    <Button
+                                        variant="secondary"
+                                        className="w-full justify-start bg-indigo-900/20 text-indigo-400 hover:bg-indigo-900/40 border border-indigo-500/20"
+                                    >
+                                        Admin Dashboard
+                                    </Button>
+                                </Link>
+                            )}
+                            
                             <Link to="/auctions/create">
                                 <Button
                                     variant="outline"
-                                    className="w-full justify-start"
+                                    className="w-full justify-start bg-indigo-900/20 text-indigo-400 hover:bg-indigo-900/40 border border-indigo-500/2"
                                 >
                                     Create Auction
                                 </Button>
@@ -71,7 +82,7 @@ export function MobileNav({
                             <Link to="/profile">
                                 <Button
                                     variant="ghost"
-                                    className="w-full justify-start"
+                                    className="w-full justify-start bg-indigo-900/20 text-indigo-400 hover:bg-indigo-900/40 border border-indigo-500/2"
                                 >
                                     Profile
                                 </Button>
@@ -79,7 +90,7 @@ export function MobileNav({
                             <Button
                                 variant="ghost"
                                 onClick={logout}
-                                className="w-full justify-start text-red-600"
+                                className="w-full justify-start text-red-400"
                             >
                                 Logout
                             </Button>

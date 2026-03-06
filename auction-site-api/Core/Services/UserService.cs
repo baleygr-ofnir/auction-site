@@ -98,10 +98,13 @@ public class UserService : GenericService<User>
                 return (null, "Email is already registered to another user.");
         }
 
-        var userMapping = Mapper.Map<User>(request);
-        var updated = await Update(id, userMapping);
-        var response = Mapper.Map<UserResponse>(updated);
+        Mapper.Map(request, user);
+
+        await Repository.SaveChangesAsync();
+        
+        var response = Mapper.Map<UserResponse>(user);
 
         return (response, null);
     }
+
 }
