@@ -98,8 +98,11 @@ public class UserService : GenericService<User>
                 return (null, "Email is already registered to another user.");
         }
 
+        if (request.IsAdmin is null && user.IsAdmin) request.IsAdmin = true;
+        if (request.IsActive is null && user.IsActive) request.IsActive = true;
         Mapper.Map(request, user);
-
+        if (request.Password is not null) user.PasswordHash = _passwordHasher.HashPassword(user, request.Password);
+        
         await Repository.SaveChangesAsync();
         
         var response = Mapper.Map<UserResponse>(user);

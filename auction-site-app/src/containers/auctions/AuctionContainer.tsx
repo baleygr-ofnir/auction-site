@@ -24,6 +24,7 @@ export function AuctionContainer() {
     const navigate = useNavigate();
     const { session } = useAuth();
     const [auction, setAuction] = useState<AuctionDetailResponse | null>(null);
+    const [ownerUsername, setOwnerUsername] = useState<string | null>(null);
     const [bidderNames, setBidderNames] = useState<Record<string, string>>({});
     const [winningUsername, setWinningUsername] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(true);
@@ -36,13 +37,15 @@ export function AuctionContainer() {
         setIsLoading(true);
         try {
             const data = await auctionService.getById(id);
+            const owner = await userService.getById(data.creatorId);
             setAuction(data);
-
+            setOwnerUsername(owner.username);
+            
             const currentBids = 'bids' in data ? data.bids : [];
 
             // 1. Get unique user IDs from the bids
             const uniqueUserIds = Array.from(new Set(currentBids.map(b => b.userId)));
-
+            
             // 2. Fetch usernames for all unique bidders
             const nameMap: Record<string, string> = {};
             await Promise.all(uniqueUserIds.map(async (uid) => {
@@ -97,7 +100,7 @@ export function AuctionContainer() {
 
     const isClosed = !auction.isActive;
     const isOwner = session?.user?.id === auction.creatorId;
-
+    
     // Sorting: Newest/Highest at the top (Index 0)
     const bids = 'bids' in auction
         ? [...auction.bids].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
@@ -134,6 +137,7 @@ export function AuctionContainer() {
                                 Edit listing
                             </Button>
                         )}
+                        <h4 className="text-indigo-400 text-sm"><p className="text-slate-400">Creator</p>{ownerUsername}</h4>
                     </div>
                 </div>
 

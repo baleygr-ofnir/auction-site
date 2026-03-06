@@ -29,7 +29,9 @@ public class UsersController : ControllerBase
     public async Task<ActionResult<UserResponse>> RegisterUser([FromBody] UserRegisterRequest request)
     {
         var result = await _userService.RegisterUserAsync(request);
-        return CreatedAtAction(nameof(GetUser), new { id = result.Response }, result.Response);
+        if (result.Error is not null) return BadRequest(result.Error);
+        
+        return CreatedAtAction(nameof(GetUser), new { id = result.Response?.Id }, result.Response);
     }
 
     [HttpPost("login")]

@@ -14,12 +14,13 @@ import { UserManagementTable } from '@/components/admin/UserManagementTable';
 import { EyeOff, Gavel, UserMinus } from 'lucide-react';
 
 export function AdminContainer() {
+    const [activeTab, setActiveTab] = useState('users'); 
     const [users, setUsers] = useState<UserResponse[]>([]);
     const [auctions, setAuctions] = useState<AuctionListItemResponse[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
-    const fetchData = async () => {
-        setIsLoading(true);
+    const fetchData = async (isInitialLoad = false) => {
+        if (isInitialLoad) setIsLoading(true);
         try {
             const [userData, auctionData] = await Promise.all([
                 userService.getAll(),
@@ -30,12 +31,12 @@ export function AdminContainer() {
         } catch (error) {
             console.error('Management data fetch failed', error);
         } finally {
-            setIsLoading(false);
+            if (isInitialLoad) setIsLoading(false);
         }
     };
 
     useEffect(() => {
-        fetchData();
+        fetchData(true);
     }, []);
 
     const handleDeleteAuction = async (id: string, title: string) => {
@@ -54,7 +55,7 @@ export function AdminContainer() {
     const handleToggleActive = async (id: string, currentStatus: boolean) => {
         try {
             await auctionService.update(id, { isActive: !currentStatus });
-            await fetchData(); // Refresh data to update visibility badges
+            await fetchData(false); // Refresh data to update visibility badges
         } catch (err) {
             console.error("Failed to update auction visibility", err);
         }
@@ -64,7 +65,7 @@ export function AdminContainer() {
         try {
             // Sending ONLY the isActive property as your manual test confirmed works
             await userService.update(user.id, { isActive: !user.isActive });
-            await fetchData(); // AWAIT this so the UI doesn't show old data
+            await fetchData(false); // AWAIT this so the UI doesn't show old data
         } catch (error) {
             console.error('Update of user failed', error);
         }
@@ -76,7 +77,7 @@ export function AdminContainer() {
 
         try {
             await userService.update(user.id, { isAdmin: !user.isAdmin });
-            await fetchData();
+            await fetchData(false);
         } catch (error) {
             console.error('Admin toggle failed', error);
         }
@@ -93,13 +94,13 @@ export function AdminContainer() {
     return (
         <div className="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8 w-full overflow-hidden">
             <header className="flex flex-col gap-2 mb-8">
-                <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-indigo-500 flex items-center gap-3">
+                <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-indigo-400 flex items-center gap-3">
                     <Gavel className="h-8 w-8 md:h-10 md:w-10" /> Admin Dashboard
                 </h1>
                 <p className="text-slate-400">Global system management.</p>
             </header>
 
-            <Tabs defaultValue="users" className="w-full">
+            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
                 <TabsList className="flex w-full justify-start overflow-x-auto border-b border-slate-800 bg-transparent p-0 h-auto rounded-none mb-8 no-scrollbar">
                     <TabsTrigger value="users" className="whitespace-nowrap shrink-0 rounded-none border-b-2 border-transparent px-4 pb-3 pt-2 font-medium text-slate-500 data-[state=active]:border-slate-200 data-[state=active]:text-slate-200">
                         Users

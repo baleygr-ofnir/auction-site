@@ -82,10 +82,16 @@ export function DesktopNav({
               ) : (
                   <>
                       <Link to="/login">
-                          <Button variant="ghost">Login</Button>
+                          <Button 
+                              variant="ghost"
+                              className="text-indigo-400 hover:text-indigo-300"
+                          >Login</Button>
                       </Link>
                       <Link to="/register">
-                          <Button variant="outline">Register</Button>
+                          <Button
+                              variant="outline"
+                              className="text-indigo-400 hover:text-indigo-300"
+                          >Register</Button>
                       </Link>
                   </>
               )} 

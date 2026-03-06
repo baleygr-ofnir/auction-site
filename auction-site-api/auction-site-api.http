@@ -23,13 +23,13 @@ Content-Type: application/json
 ### testuser2 vars
 @userId2 = 019ca10c-acbe-72cb-93cb-067a325797d9
 
-### Register testuser2
+### Register testuser3
 POST {{auction_site_api_HostAddress}}/users/register
 Content-Type: application/json
 
 {
-    "username": "testuser2",
-    "email": "testuser2@example.com",
+    "username": "testuser4",
+    "email": "testuser4@example.com",
     "password": "P@ssword!"
 }
 

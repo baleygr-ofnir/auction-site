@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 import { setAuthToken } from '@/lib/client';
-import type { UserLoginResponse, UserResponse } from '@/types/user';
+import type { UserLoginResponse } from '@/types/user';
 
 interface AuthContextValue {
     session: UserLoginResponse | null;

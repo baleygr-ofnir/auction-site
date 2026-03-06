@@ -25,7 +25,7 @@ const formSchema = z.object({
 }).refine((data) => {
     // Ensure start time isn't in the past (allowing a 1-minute buffer for form filling)
     const now = new Date();
-    now.setMinutes(now.getMinutes() - 1);
+    now.setMinutes(now.getMinutes() - 30);
     return new Date(data.startTime) >= now;
 }, {
     message: 'Start time cannot be in the past.',
@@ -38,6 +38,13 @@ const formSchema = z.object({
 export function CreateAuctionContainer() {
     const navigate = useNavigate();
     const [globalError, setGlobalError] = useState<string | null>(null);
+
+    const getLocalISOString = (daysOffset = 0) => {
+        const date = new Date();
+        date.setDate(date.getDate() + daysOffset); // Adds the days (0 for now, 14 for end time)
+        date.setMinutes(date.getMinutes() - date.getTimezoneOffset()); // Adjusts to local timezone
+        return date.toISOString().slice(0, 16); // Returns YYYY-MM-DDTHH:mm
+    };
     
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -45,8 +52,8 @@ export function CreateAuctionContainer() {
             title: '',
             description: '',
             startPrice: 0,
-            startTime: '',
-            endTime: '',
+            startTime: getLocalISOString(),
+            endTime: getLocalISOString(14),
         },
     });
     
