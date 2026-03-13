@@ -36,7 +36,7 @@ export function DesktopNav({
                   placeholder="Search auctions by title..." 
                   value={query}
                   onChange={onChange} 
-                  className="w-full bg-slate-950 border-slate-800 rounded-md px-3 py-1 text-slate-100 text-sm outline-none focus:ring-1 focus:ring-blue-500 transition-all"
+                  className="max-w-65 bg-slate-950 border-slate-800 rounded-md px-3 py-1 text-slate-100 text-sm outline-none focus:ring-1 focus:ring-blue-500 transition-all"
                 />
                 <Button type="submit" className="bg-slate-800 px-4 py-1 rounded-md text-slate-300 text-sm hover:bg-indigo-700 hover:text-indigo-400 transition-colors whitespace-nowrap">Search</Button>
             </form>

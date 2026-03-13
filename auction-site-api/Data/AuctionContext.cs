@@ -3,13 +3,13 @@ using auction_site_api.Data.Entities;
 
 namespace auction_site_api.Data;
 
-public class AuctionContext : DbContext
+public class AuctionMssqlContext : DbContext
 {
     public DbSet<User> Users => Set<User>();
     public DbSet<Auction> Auctions => Set<Auction>();
     public DbSet<Bid> Bids => Set<Bid>();
     
-    public AuctionContext(DbContextOptions<AuctionContext> options) : base(options) {}
+    public AuctionMssqlContext(DbContextOptions<AuctionContext> options) : base(options) {}
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -32,7 +32,8 @@ public class AuctionContext : DbContext
             entity.Property(user => user.Username).IsRequired().HasMaxLength(64);
             entity.Property(user => user.Email).IsRequired().HasMaxLength(128);
 
-            entity.Property(user => user.CreatedAt).HasDefaultValueSql("NOW()");
+            // Replaced NOW() with GETUTCDATE() for SQL Server
+            entity.Property(user => user.CreatedAt).HasDefaultValueSql("GETUTCDATE()");
 
             entity.HasData
             (
@@ -79,7 +80,9 @@ public class AuctionContext : DbContext
             
             entity.Property(auction => auction.Id).IsRequired().HasMaxLength(128);
             entity.Property(auction => auction.Description).IsRequired();
-            entity.Property(auction => auction.StartPrice).HasColumnType("numeric(18,2)");
+            
+            // Replaced numeric with decimal for SQL Server
+            entity.Property(auction => auction.StartPrice).HasColumnType("decimal(18,2)");
 
             entity.HasIndex(auction => auction.Title);
             
@@ -88,7 +91,8 @@ public class AuctionContext : DbContext
                 .HasForeignKey(auction => auction.CreatorId)
                 .OnDelete(DeleteBehavior.Restrict);
             
-            entity.Property(auction => auction.CreatedAt).HasDefaultValueSql("NOW()");
+            // Replaced NOW() with GETUTCDATE() for SQL Server
+            entity.Property(auction => auction.CreatedAt).HasDefaultValueSql("GETUTCDATE()");
 
             entity.HasData
                 (
@@ -135,7 +139,8 @@ public class AuctionContext : DbContext
         {
             entity.HasKey(bid => bid.Id);
 
-            entity.Property(bid => bid.Amount).HasColumnType("numeric(18,2)");
+            // Replaced numeric with decimal for SQL Server
+            entity.Property(bid => bid.Amount).HasColumnType("decimal(18,2)");
 
             entity.HasOne(bid => bid.Auction)
                 .WithMany(bid => bid.Bids)
@@ -147,7 +152,8 @@ public class AuctionContext : DbContext
                 .HasForeignKey(bid => bid.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            entity.Property(bid => bid.CreatedAt).HasDefaultValueSql("NOW()");
+            // Replaced NOW() with GETUTCDATE() for SQL Server
+            entity.Property(bid => bid.CreatedAt).HasDefaultValueSql("GETUTCDATE()");
 
             entity.HasData
                 (
