@@ -83,6 +83,8 @@ public class UsersController : ControllerBase
         var isAdmin = User.IsInRole("Admin");
         if (!isAdmin && currentUserId != id) return Forbid();
 
+        if (!isAdmin && request.IsAdmin == true) return StatusCode(StatusCodes.Status403Forbidden, "Only administrators may enable administrator status on users.");
+
         var result = await _userService.UpdateUserAsync(id, request);
         if (result.Error is not null) return BadRequest(result.Error);
         

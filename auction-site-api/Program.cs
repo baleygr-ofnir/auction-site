@@ -28,6 +28,8 @@ public class Program
                 {
                     policy
                         .WithOrigins("http://localhost:5173")
+                        .WithOrigins("https://auction-site-app-hxg9erevccagg2ee.swedencentral-01.azurewebsites.net")
+                        .WithOrigins("https://auction.mimirsbrunnr.cloud")
                         .AllowAnyHeader()
                         .AllowAnyMethod();
                 });
@@ -44,7 +46,7 @@ public class Program
         // Data
         builder.Services.AddDbContext<AuctionContext>
         (
-            options => options.UseNpgsql
+            options => options.UseSqlServer
             (
                 builder.Configuration.GetConnectionString("DefaultConnection")
                 ?? throw new InvalidOperationException("No connection string found.")

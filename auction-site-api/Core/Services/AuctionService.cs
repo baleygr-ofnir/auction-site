@@ -6,7 +6,6 @@ using auction_site_api.Data.Entities;
 using auction_site_api.Data.Repositories;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore.Migrations.Operations;
-using Npgsql;
 
 namespace auction_site_api.Core.Services;
 
@@ -74,7 +73,7 @@ public class AuctionService : GenericService<Auction>
 
         if (userId != null)
         {
-            auctions = await _auctionRepository.FindAsync(auction => auction.CreatorId == userId);
+            auctions = await FindAsync(auction => auction.CreatorId == userId);
         }
         else if (searching)
         {
@@ -82,7 +81,7 @@ public class AuctionService : GenericService<Auction>
         }
         else
         {
-            auctions = await _auctionRepository.AllAsync();
+            auctions = await AllAsync();
         }
 
         var response = auctions.Select<Auction, AuctionListItemResponse>(auction =>

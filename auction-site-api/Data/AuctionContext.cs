@@ -3,13 +3,13 @@ using auction_site_api.Data.Entities;
 
 namespace auction_site_api.Data;
 
-public class AuctionMssqlContext : DbContext
+public class AuctionContext : DbContext
 {
     public DbSet<User> Users => Set<User>();
     public DbSet<Auction> Auctions => Set<Auction>();
     public DbSet<Bid> Bids => Set<Bid>();
     
-    public AuctionMssqlContext(DbContextOptions<AuctionContext> options) : base(options) {}
+    public AuctionContext(DbContextOptions<AuctionContext> options) : base(options) {}
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
