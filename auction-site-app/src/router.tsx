@@ -17,11 +17,11 @@ export const router = createBrowserRouter([
         path: "/",
         element: <MainLayout />,
         children: [
-            { index: true, element: <Navigate to="/auctions" replace /> },
+            { index: true, element: <AuctionsPage />  },
             {
                 path: "auctions",
                 children: [
-                    { index: true, element: <AuctionsPage /> },
+                    { index: true, element: <Navigate to="/" replace /> },
                     {
                         path: "create",
                         element: (

@@ -18,7 +18,7 @@ public class Program
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
-
+        string[]? origins = builder.Configuration.GetSection("AllowedOrigins").Get<string[]>();
         // Add services to the container.
         builder.Services.AddCors(options =>
         {
@@ -26,12 +26,13 @@ public class Program
                 name: "_myAllowSpecificOrigins",
                 policy =>
                 {
-                    policy
-                        .WithOrigins("http://localhost:5173")
-                        .WithOrigins("https://auction-site-app-hxg9erevccagg2ee.swedencentral-01.azurewebsites.net")
-                        .WithOrigins("https://auction.mimirsbrunnr.cloud")
-                        .AllowAnyHeader()
-                        .AllowAnyMethod();
+                    if (origins != null && origins.Length > 0)
+                    {
+                        policy
+                            .WithOrigins(origins)
+                            .AllowAnyHeader()
+                            .AllowAnyMethod();
+                    }
                 });
         });
         builder.Services.AddControllers();

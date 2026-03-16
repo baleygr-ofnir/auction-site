@@ -14,20 +14,20 @@ export default function MainLayout() {
         if (query.trim() !== '') {
             navigate(`/auctions?search=${encodeURIComponent(query)}`);
         } else {
-            navigate('/auctions');
+            navigate('/');
         }
     };
     
     const handleSetQuery = (value: string) => {
         setQuery(value);
-        if (value.trim() === '') navigate('/auctions');
+        if (value.trim() === '') navigate('/');
     }
     
     return (
         <div className="min-h-screen flex flex-col">
             <header className="flex items-center justify-between px-6 h-16 border-b border-slate-900 bg-slate-900/80 backdrop-blur-md sticky top-0 z-50">
                 {/* Logo / Brand */}
-                <Link to="/auctions" className="font-bold text-xl text-indigo-400">Auction Site</Link>
+                <Link to="/" className="font-bold text-xl text-indigo-400">Auction Site</Link>
 
                 {/* Desktop Navigation */}
                 <DesktopNav
