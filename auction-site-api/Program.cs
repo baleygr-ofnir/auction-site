@@ -19,7 +19,7 @@ public class Program
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
-        string[]? origins = builder.Configuration.GetSection("AllowedOrigins").Get<string[]>();
+        string[]? allowedOrigins = builder.Configuration.GetSection("AllowedOrigins").Get<string[]>();
         // Add services to the container.
         builder.Services.AddCors(options =>
         {
@@ -27,10 +27,10 @@ public class Program
                 name: "_myAllowSpecificOrigins",
                 policy =>
                 {
-                    if (origins != null && origins.Length > 0)
+                    if (allowedOrigins != null && allowedOrigins.Length > 0)
                     {
                         policy
-                            .WithOrigins(origins)
+                            .WithOrigins(allowedOrigins)
                             .AllowAnyHeader()
                             .AllowAnyMethod();
                     }
