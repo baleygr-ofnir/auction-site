@@ -28,6 +28,9 @@ services:
       - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
       # The Host is 'db', matching the service name above
       - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}
+      - AllowedOrigins__0: ${DEVELOPMENT_DOMAIN}
+      - AllowedOrigins__1: ${PRODUCTION_DOMAIN}
+      - AllowedOrigins__2: ${PRODUCTION_API_URL}
     depends_on:
       - db
 
@@ -39,6 +42,7 @@ services:
         NODE_VERSION: ${NODE_VERSION}
         NGINX_VERSION: ${NGINX_VERSION}
         APP_PORT: ${APP_PORT}
+        VITE_API_BASE_URL: ${PRODUCTION_API_URL}
     restart: always
     env_file:
       - .env
