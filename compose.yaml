@@ -30,7 +30,7 @@ services:
       - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}
       - AllowedOrigins__0=${DEVELOPMENT_DOMAIN}
       - AllowedOrigins__1=${PRODUCTION_DOMAIN}
-      - AllowedOrigins__2=${PRODUCTION_API_URL}
+      - AllowedOrigins__2=${PRODUCTION_API_DOMAIN}
       - Jwt__Key=${Jwt_Key}
       - Jwt__Issuer=${Jwt_Issuer}
       - Jwt_Audience=${Jwt_Audience}
