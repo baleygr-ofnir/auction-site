@@ -1,4 +1,6 @@
+using auction_site_api.Core;
 using auction_site_api.Core.Services;
+using auction_site_api.Data.Entities;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -19,7 +21,7 @@ public class AuctionExpiryWorker : BackgroundService
         {
             using (var scope = _serviceProvider.CreateScope())
             {
-                var auctionService = scope.ServiceProvider.GetRequiredService<AuctionService>();
+                var auctionService = scope.ServiceProvider.GetRequiredService<IService<Auction>>();
                 
                 var expiredAuctions = await auctionService.FindAsync(auction => auction.IsActive && auction.EndTime <= DateTime.UtcNow);
 
