@@ -106,9 +106,6 @@ public class Program
 
         app.UseForwardedHeaders();
 
-        app.UseRouting();
-        app.UseCors("_myAllowSpecificOrigins");
-        
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
         {
@@ -116,6 +113,7 @@ public class Program
         }
 
         app.UseHttpsRedirection();
+        app.UseCors();
         app.UseAuthentication();
         app.UseAuthorization();
 
