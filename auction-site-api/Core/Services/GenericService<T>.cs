@@ -4,7 +4,7 @@ using AutoMapper;
 
 namespace auction_site_api.Core.Services;
 
-public class GenericService<T> : IService<T> where T : class
+public abstract class GenericService<T> : IService<T> where T : class
 {
     protected readonly IRepository<T> Repository;
     protected readonly IMapper Mapper;
