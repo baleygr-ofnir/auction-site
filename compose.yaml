@@ -33,8 +33,8 @@ services:
       - AllowedOrigins__2=${PRODUCTION_API_DOMAIN}
       - Jwt__Key=${Jwt_Key}
       - Jwt__Issuer=${Jwt_Issuer}
-      - Jwt_Audience=${Jwt_Audience}
-      - Jwt_ExpiresMinutes=${Jwt_Expiry}
+      - Jwt__Audience=${Jwt_Audience}
+      - Jwt__ExpiresMinutes=${Jwt_Expiry}
     depends_on:
       - db
 

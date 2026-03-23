@@ -1,4 +1,5 @@
-@auction_site_api_HostAddress = http://localhost:5220/api
+#@auction_site_api_HostAddress = http://localhost:5220/api
+@auction_site_api_HostAddress = https://api.auction.mimirsbrunnr.cloud/api
 ### testuser1
 POST {{auction_site_api_HostAddress}}/users/register
 Content-Type: application/json
@@ -52,7 +53,7 @@ Authorization: Bearer {{}}
 DELETE {{auction_site_api_HostAddress}}/users/019ca0f7-1604-70d5-9a43-42c05792635d
 
 ### Create auction
-POST {{auction_site_api_HostAddress}}/auctions
+POST {{auction_site_api_HostAddress}}/auctions/active?search=
 Content-Type: application/json
 Authorization: Bearer {{}}
 
@@ -75,7 +76,8 @@ GET {{auction_site_api_HostAddress}}/auctions/33333333-3333-3333-3333-3333333333
 GET {{auction_site_api_HostAddress}}/auctions/019cb450-d6aa-729d-bf2d-677050b5f8d6
 
 ### Get auctions
-GET {{auction_site_api_HostAddress}}/auctions
+GET {{auction_site_api_HostAddress}}/auctions/active?search=
+Origin: https://auction.mimirsbrunnr.cloud
 ### Get auctions - userid
 GET {{auction_site_api_HostAddress}}/auctions?search=019ca10c-acbe-72cb-93cb-067a325797d9
 ### Deactivate auction
