@@ -110,12 +110,12 @@ public class Program
 
         app.MapControllers();
 
-        // using (var scope = app.Services.CreateScope())
-        // {
-        //     var dbContext = scope.ServiceProvider.GetRequiredService<AuctionContext>();
-        //     // This will create the database and apply all migrations automatically
-        //     dbContext.Database.Migrate(); 
-        // } 
+        using (var scope = app.Services.CreateScope())
+        {
+            var dbContext = scope.ServiceProvider.GetRequiredService<AuctionContext>();
+            // This will create the database and apply all migrations automatically
+            dbContext.Database.Migrate(); 
+        } 
         
         app.Run();
     }
