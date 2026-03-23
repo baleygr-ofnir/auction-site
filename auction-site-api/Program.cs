@@ -6,6 +6,7 @@ using auction_site_api.Data.Entities;
 using auction_site_api.Data.Repositories;
 using auction_site_api.Mapping;
 using auction_site_api.Security;
+using auction_site_api.Workers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -43,7 +44,6 @@ public class Program
         builder.Services.AddScoped<IService<Auction>, AuctionService>();
         builder.Services.AddScoped<IService<Bid>, BidService>();
         builder.Services.AddScoped<IService<User>, UserService>();
-        
         // Data
         builder.Services.AddDbContext<AuctionContext>
         (
@@ -62,6 +62,9 @@ public class Program
             typeof(UserProfile),
             typeof(AuctionProfile)
         );
+        
+        // Workers
+        builder.Services.AddHostedService<AuctionExpiryWorker>();
         
         // Security
         builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
