@@ -20,24 +20,7 @@ public class Program
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
-        string[]? allowedOrigins = builder.Configuration.GetSection("AllowedOrigins").Get<string[]>();
-        Console.WriteLine($"CORS DEBUG: Loaded {allowedOrigins?.Length ?? 0} origins. First: {allowedOrigins?.FirstOrDefault() ?? "NULL"}");
-        // Add services to the container.
-        builder.Services.AddCors(options =>
-        {
-            options.AddPolicy(
-                name: "_myAllowSpecificOrigins",
-                policy =>
-                {
-                    if (allowedOrigins != null && allowedOrigins.Length > 0)
-                    {
-                        policy
-                            .WithOrigins(allowedOrigins)
-                            .AllowAnyHeader()
-                            .AllowAnyMethod();
-                    }
-                });
-        });
+
         builder.Services.AddControllers();
         
         // Dependency Injections
@@ -96,6 +79,19 @@ public class Program
         
         // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
         builder.Services.AddOpenApi();
+        
+        var allowedOrigins = builder.Configuration.GetSection("AllowedOrigins").Get<string[]>() ?? [];
+        Console.WriteLine($"CORS DEBUG: Loaded {allowedOrigins?.Length ?? 0} origins. First: {allowedOrigins?.FirstOrDefault() ?? "NULL"}");
+        builder.Services.AddCors(options =>
+        {
+            options.AddDefaultPolicy(policy =>
+            {
+                policy.WithOrigins(allowedOrigins)
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
+            });
+        });
+       
         builder.Services.Configure<ForwardedHeadersOptions>(options =>
         {
             // Use the latest enum flags for proxy identification
