@@ -112,10 +112,27 @@ public class Program
 
         using (var scope = app.Services.CreateScope())
         {
-            var dbContext = scope.ServiceProvider.GetRequiredService<AuctionContext>();
-            // This will create the database and apply all migrations automatically
-            dbContext.Database.Migrate(); 
-        } 
+            var services = scope.ServiceProvider;
+            var logger = services.GetRequiredService<ILogger<Program>>();
+            var context = services.GetRequiredService<AuctionContext>();
+
+            // Retry loop to wait for Postgres to wake up
+            for (int i = 0; i < 10; i++)
+            {
+                try
+                {
+                    logger.LogInformation("Attempting to apply migrations (Attempt {Attempt})...", i + 1);
+                    context.Database.Migrate();
+                    logger.LogInformation("Migrations applied successfully.");
+                    break; // Success! Exit the loop.
+                }
+                catch (Npgsql.NpgsqlException ex) when (i < 9)
+                {
+                    logger.LogWarning("Database not ready yet. Retrying in 2 seconds...");
+                    Thread.Sleep(2000);
+                }
+            }
+        }
         
         app.Run();
     }
