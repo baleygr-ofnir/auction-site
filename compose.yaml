@@ -29,7 +29,7 @@ services:
       # The Host is 'db', matching the service name above
       - ConnectionStrings__DefaultConnection="Host=db;Port=${POSTGRES_PORT};Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}"
     depends_on:
-      - auction-site-db
+      - db
 
   app:
     build:
@@ -45,4 +45,4 @@ services:
     ports:
       - "${APP_PORT}:80" # Maps local 3000 to Nginx 80
     depends_on:
-      - auction-site-api
+      - api
