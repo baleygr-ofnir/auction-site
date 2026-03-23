@@ -8,6 +8,7 @@ using auction_site_api.Mapping;
 using auction_site_api.Security;
 using auction_site_api.Workers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -95,9 +96,21 @@ public class Program
         
         // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
         builder.Services.AddOpenApi();
+        builder.Services.Configure<ForwardedHeadersOptions>(options =>
+        {
+            // Use the latest enum flags for proxy identification
+            options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
 
+            // FIX: Use the non-obsolete KnownIPNetworks instead of KnownNetworks
+            // We clear these to trust the Nginx Proxy Manager (NPM) inside the Docker network
+            options.KnownIPNetworks.Clear(); 
+            options.KnownProxies.Clear();
+        });
         var app = builder.Build();
 
+        app.UseForwardedHeaders();
+
+        app.UseRouting();
         app.UseCors("_myAllowSpecificOrigins");
         
         // Configure the HTTP request pipeline.
