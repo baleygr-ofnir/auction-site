@@ -47,7 +47,7 @@ public class Program
         // Data
         builder.Services.AddDbContext<AuctionContext>
         (
-            options => options.UseSqlServer
+            options => options.UseNpgsql
             (
                 builder.Configuration.GetConnectionString("DefaultConnection")
                 ?? throw new InvalidOperationException("No connection string found.")
@@ -107,6 +107,13 @@ public class Program
 
         app.MapControllers();
 
+        // using (var scope = app.Services.CreateScope())
+        // {
+        //     var dbContext = scope.ServiceProvider.GetRequiredService<AuctionContext>();
+        //     // This will create the database and apply all migrations automatically
+        //     dbContext.Database.Migrate(); 
+        // } 
+        
         app.Run();
     }
 }

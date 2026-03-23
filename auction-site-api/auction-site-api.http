@@ -1,5 +1,4 @@
 @auction_site_api_HostAddress = http://localhost:5220/api
-@azure_auction_site_api_HostAddress = https://auction-site-fmcscba7ctahc2hj.swedencentral-01.azurewebsites.net/api
 ### testuser1
 POST {{auction_site_api_HostAddress}}/users/register
 Content-Type: application/json
@@ -11,7 +10,6 @@ Content-Type: application/json
 }
 
 ### Login testuser1
-@token1=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwMTljYTEwZC1hYjc4LTdkOGItOWNiNC1iY2Q0NWEzNTEyZjMiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjAxOWNhMTBkLWFiNzgtN2Q4Yi05Y2I0LWJjZDQ1YTM1MTJmMyIsImp0aSI6ImU3ZjBjM2FlLWYzNTgtNGEzOS05MWY0LTY3NDhjMGFkZTNlZSIsImlzcyI6ImF1Y3Rpb24tc2l0ZS1hcGkiLCJhdWQiOlsiYXVjdGlvbi1zaXRlLWFwcCIsImF1Y3Rpb24tc2l0ZS1hcHAiXSwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW4iLCJuYmYiOjE3NzI3NjkzMTksImV4cCI6MTc3Mjc3MjkxOX0.lFeL-AkMNn7pu9d9rlV8qeREA3W0wzYLx9Dl3T9wXEA
 POST {{auction_site_api_HostAddress}}/users/login
 Content-Type: application/json
 
@@ -34,7 +32,6 @@ Content-Type: application/json
 }
 
 ### Login testuser2
-@token2=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwMTljYTEwYy1hY2JlLTcyY2ItOTNjYi0wNjdhMzI1Nzk3ZDkiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjAxOWNhMTBjLWFjYmUtNzJjYi05M2NiLTA2N2EzMjU3OTdkOSIsImp0aSI6IjAzMjM3ZjRjLWI5Y2MtNGQ1OC1hMmJiLTgzZTY0ZDMxZGM1YSIsImlzcyI6ImF1Y3Rpb24tc2l0ZS1hcGkiLCJhdWQiOlsiYXVjdGlvbi1zaXRlLWFwcCIsImF1Y3Rpb24tc2l0ZS1hcHAiXSwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiVXNlciIsIm5iZiI6MTc3MjY3MTE1NywiZXhwIjoxNzcyNjc0NzU3fQ.xsKYtoYM1NqQYikaTISEI1zplvrGIhvkli4CrGJwy1Q
 POST {{auction_site_api_HostAddress}}/users/login
 Content-Type: application/json
 
@@ -45,7 +42,7 @@ Content-Type: application/json
 ### Disable testuser2
 PUT {{auction_site_api_HostAddress}}/users/019ca10c-acbe-72cb-93cb-067a325797d9
 Content-Type: application/json
-Authorization: Bearer {{token1}}
+Authorization: Bearer {{}}
 
 {
   "isActive": false
@@ -57,7 +54,7 @@ DELETE {{auction_site_api_HostAddress}}/users/019ca0f7-1604-70d5-9a43-42c0579263
 ### Create auction
 POST {{auction_site_api_HostAddress}}/auctions
 Content-Type: application/json
-Authorization: Bearer {{token2}}
+Authorization: Bearer {{}}
 
 {
   "title": "27\" Gaming Monitor 144Hz",
@@ -84,7 +81,7 @@ GET {{auction_site_api_HostAddress}}/auctions?search=019ca10c-acbe-72cb-93cb-067
 ### Deactivate auction
 PUT {{auction_site_api_HostAddress}}/auctions/019cb450-d6aa-729d-bf2d-677050b5f8d6
 Content-Type: application/json
-Authorization: Bearer {{token2}}
+Authorization: Bearer {{}}
 
 {
     "isActive": false
@@ -93,7 +90,7 @@ Authorization: Bearer {{token2}}
 ### Place bid as testuser1
 POST {{auction_site_api_HostAddress}}/Auctions/019cb450-d6aa-729d-bf2d-677050b5f8d6/bids
 Content-Type: application/json
-Authorization: Bearer {{token1}}
+Authorization: Bearer {{}}
 
 {
   "amount": 3749.00
@@ -101,71 +98,5 @@ Authorization: Bearer {{token1}}
 
 ### Remove latest bid
 DELETE {{auction_site_api_HostAddress}}/Auctions/019cb450-d6aa-729d-bf2d-677050b5f8d6/bids/latest
-Authorization: Bearer {{token1}}
+Authorization: Bearer {{}}
 
-### Get auctions AZURE
-GET {{azure_auction_site_api_HostAddress}}/auctions
-### Get auctions - userid AZURE
-GET {{azure_auction_site_api_HostAddress}}/auctions?search=019ca10c-acbe-72cb-93cb-067a325797d9
-
-
-### testuser1
-POST {{azure_auction_site_api_HostAddress}}/users/register
-Content-Type: application/json
-
-{
-  "username": "testuser1",
-  "email": "testuser1@example.com",
-  "password": "P@ssword!"
-}
-
-### Login testuser1
-@azToken1=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlN2U4ZTI5Zi03OGExLTRmMGMtMzk5Mi0wOGRlN2Y3YTEwN2EiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6ImU3ZThlMjlmLTc4YTEtNGYwYy0zOTkyLTA4ZGU3ZjdhMTA3YSIsImp0aSI6IjYzOWNjZWY3LWNkY2YtNGMxZi1hMWRiLWI3MTFhMmNlMGM3NiIsImlzcyI6ImF1Y3Rpb24tc2l0ZS1hcGkiLCJhdWQiOlsiYXVjdGlvbi1zaXRlLWFwcCIsImF1Y3Rpb24tc2l0ZS1hcHAiXSwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiVXNlciIsIm5iZiI6MTc3MzIzOTE3MiwiZXhwIjoxNzczMjQyNzcyfQ.TESysICeXIyXSk9YPkACcXzkH1BVYEZ7X0mpszDvhNA=
-@azUserId1 = e7e8e29f-78a1-4f0c-3992-08de7f7a107a
-POST {{azure_auction_site_api_HostAddress}}/users/login
-Content-Type: application/json
-
-{
-  "usernameOrEmail": "testuser1",
-  "password": "P@ssword!"
-}
-
-### Create baleygr
-POST {{azure_auction_site_api_HostAddress}}/users/register
-Content-Type: application/json
-
-{
-  "username": "baleygr",
-  "email": "baleygr@mimirsbrunnr.cloud",
-  "password": "h4nd0fgr1mn1r"
-}
-
-### Login baleygr
-POST {{azure_auction_site_api_HostAddress}}/users/login
-Content-Type: application/json
-
-{
-  "usernameOrEmail": "baleygr",
-  "password": "h4nd0fgr1mn1r"
-}
-
-###
-@baleygrToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmOWViYWQ2OC04NTc4LTQ0ZWEtMzk5My0wOGRlN2Y3YTEwN2EiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6ImY5ZWJhZDY4LTg1NzgtNDRlYS0zOTkzLTA4ZGU3ZjdhMTA3YSIsImp0aSI6ImI4YTIzYzY2LTFmYjctNGEyNi1hZjkxLWE4Zjk3MTE0YmU0NCIsImlzcyI6ImF1Y3Rpb24tc2l0ZS1hcGkiLCJhdWQiOlsiYXVjdGlvbi1zaXRlLWFwcCIsImF1Y3Rpb24tc2l0ZS1hcHAiXSwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiVXNlciIsIm5iZiI6MTc3MzI0MDE4MywiZXhwIjoxNzczMjQzNzgzfQ.cc9Ft7lHWhfEli6jY02u0E1PCS1ydE6SeMy6K8P0_A8
-PUT {{azure_auction_site_api_HostAddress}}/users/{{azUserId1}}
-Authorization: Bearer {{azToken1}}
-Content-Type: application/json
-
-{
-    "isAdmin": true
-}
-
-### Create auction
-POST {{azure_auction_site_api_HostAddress}}/auctions
-Content-Type: application/json
-Authorization: Bearer {{azToken1}}
-
-{
-  "title": "Dinner Table",
-  "Description": "Old dinner table in wood",
-  "startPrice": 500.00
-}
