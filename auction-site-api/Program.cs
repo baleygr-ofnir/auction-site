@@ -20,6 +20,7 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
         string[]? allowedOrigins = builder.Configuration.GetSection("AllowedOrigins").Get<string[]>();
+        Console.WriteLine($"CORS DEBUG: Loaded {allowedOrigins?.Length ?? 0} origins. First: {allowedOrigins?.FirstOrDefault() ?? "NULL"}");
         // Add services to the container.
         builder.Services.AddCors(options =>
         {
@@ -97,6 +98,8 @@ public class Program
 
         var app = builder.Build();
 
+        app.UseCors("_myAllowSpecificOrigins");
+        
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
         {
@@ -104,7 +107,6 @@ public class Program
         }
 
         app.UseHttpsRedirection();
-        app.UseCors("_myAllowSpecificOrigins");
         app.UseAuthentication();
         app.UseAuthorization();
 
