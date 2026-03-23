@@ -25,6 +25,9 @@ public class BidService : GenericService<Bid>
 
     public async Task<(BidSummaryResponse? Response, string? Error)> PlaceBid(Guid userId, BidCreateRequest request, Auction auction)
     {
+        if (!auction.IsActive || auction.EndTime <= DateTime.UtcNow)
+            return (null, "Cannot place bids from closed or inactive auctions.");
+        
         var highestBid = auction.Bids
             .OrderByDescending(bid => bid.Amount)
             .FirstOrDefault();
