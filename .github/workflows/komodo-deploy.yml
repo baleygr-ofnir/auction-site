@@ -70,7 +70,7 @@ jobs:
           HTTP_RESPONSE=$(curl --silent --write-out "HTTPSTATUS:%{http_code}" -X POST "${{ secrets.KOMODO_WEBHOOK_URL }}")
           HTTP_STATUS=$(echo $HTTP_RESPONSE | tr -d '\n' | sed -E 's/.*HTTPSTATUS:([0-9]+)$/\1/')
   
-          if [ "$HTTP_STATUS" -ne 200 ] && [ "$HTTP_STATUS" -ne 202 ] && [ "$HTTP_STATUS -ne 204 ]; then
+          if [ "$HTTP_STATUS" -ne 200 ] && [ "$HTTP_STATUS" -ne 202 ] && [ "$HTTP_STATUS -ne 204" ]; then
             echo "Deployment failed with HTTP status $HTTP_STATUS"
             exit 1
           fi
