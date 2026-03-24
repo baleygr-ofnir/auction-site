@@ -6,6 +6,9 @@ on:
   pull_request:
     branches: [ "main" ]
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   test-api:
     name: Build & Test .NET 10 API
@@ -40,7 +43,7 @@ jobs:
           version: latest
 
       - name: Setup Node 24 LTS
-        uses: actions/setup-node@24
+        uses: actions/setup-node@v4
         with:
           node-version: '24'
           cache: 'pnpm'
