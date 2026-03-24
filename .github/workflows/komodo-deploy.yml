@@ -53,6 +53,8 @@ jobs:
       - name: Build App (Compile Check)
         working-directory: ./auction-site-app
         run: pnpm run build
+        env:
+          VITE_API_BASE_URL: "http://dummy-ci-url/api"
 
   deploy:
     name: Trigger Komodo Deploy Webhook
