@@ -58,20 +58,3 @@ jobs:
         run: pnpm run build
         env:
           VITE_API_BASE_URL: "http://dummy-ci-url/api"
-
-  deploy:
-    name: Trigger Komodo Deploy Webhook
-    needs: [test-api, test-app]
-    if: github.ref_name == 'main' && github.event_name == 'push'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Run Komodo Deployment
-        run: |
-          HTTP_RESPONSE=$(curl --silent --write-out "HTTPSTATUS:%{http_code}" -X POST "${{ secrets.KOMODO_WEBHOOK_URL }}")
-          HTTP_STATUS=$(echo $HTTP_RESPONSE | tr -d '\n' | sed -E 's/.*HTTPSTATUS:([0-9]+)$/\1/')
-  
-          if [ "$HTTP_STATUS" -ne 200 ] && [ "$HTTP_STATUS" -ne 202 ] && [ "$HTTP_STATUS" -ne 204 ]; then
-            echo "Deployment failed with HTTP status $HTTP_STATUS"
-            exit 1
-          fi
-          echo "Deployment triggered successfully"
