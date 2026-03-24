@@ -6,7 +6,8 @@ WORKDIR /src
 
 # Copy csproj and restore
 COPY ["auction-site-api.csproj", "./"]
-RUN dotnet restore "auction-site-api.csproj"
+RUN --mount=type=cache,id=nuget,target=/root/.nuget/packages \
+    dotnet restore "auction-site-api.csproj"
 
 # Copy everything else and build
 COPY . .
